@@ -1,0 +1,14 @@
+- content_for :application_content do
+  .col-lg-12
+    .panel.panel-default
+      .panel-body
+        %ul.nav.nav-tabs
+          - [User].each do |list_item_class|
+            - if can? :manage, list_item_class
+              %li{ class: ("active" if current_page?(list_item_class)) }
+                = link_to list_item_class.model_name.human.pluralize, list_item_class
+        .tab-content
+          .tab-pane.active
+            = yield
+
+= render template: "layouts/application"

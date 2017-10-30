@@ -1,0 +1,15 @@
+!!!
+%html{ lang: "en"}
+  %head
+    %meta{ charset: "utf-8" }
+    %meta{ content: "IE=edge", "http-equiv" => "X-UA-Compatible" }
+    %meta{ content: "width=device-width, initial-scale=1, maximum-scale=1", name: "viewport" }
+    %meta{ name: "turbolinks-cache-control", content: "no-cache" }
+    %title= page_title_content
+    = stylesheet_link_tag "application", media: "all", 'data-turbolinks-track': 'reload'
+    = javascript_include_tag "application", 'data-turbolinks-track': 'reload'
+    / = favicon_link_tag "favicon-16x16.png", sizes: "16x16"
+    / = favicon_link_tag "favicon-32x32.png", sizes: "32x32"
+    = csrf_meta_tags
+    = yield(:head)
+  = content_for?(:base_content) ? yield(:base_content) : yield

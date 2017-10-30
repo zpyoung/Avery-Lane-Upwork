@@ -1,0 +1,36 @@
+#users
+  .table-responsive
+    %table.table.table-striped
+      %thead
+        %tr
+          %th= sort_link(@search, :last_name, [:first_name, :last_name], "Name", {}, remote: true)
+          %th= sort_link(@search, :email, {}, remote: true )
+          %th= sort_link(@search, :phone, {}, remote: true )
+          %th= sort_link(@search, :role, {}, remote: true )
+          %th
+          %th
+      %tbody
+        - @users.each do |user|
+          %tr{ class: user.deleted_at ? "text-muted" : ""  }
+            %td= user
+            %td= user.email
+            %td= user.phone
+            %td= user.role_to_human
+            %td.text-right
+              - if user.support?
+                %span.label.label-success.mr-lg Support
+              - if user.deleted_at.present?
+                %span.label.label-danger.mr-lg Archived
+              - unless user.accepted_or_not_invited?
+                %span.label.label-warning.mr-lg Pending Invitation
+            %td.text-right.actions
+              - unless user.deleted_at.present?
+                - if user.invited_to_sign_up?
+                  = link_to fa_icon("envelope-o"), resend_invite_user_path(user), title: "Resend Invite", method: :patch, data: { confirm: "Are you sure you want to resend invite?" }
+                = link_to fa_icon("pencil"), edit_user_path(user), title: "Edit", data: { toggle: "ajax-modal", title: "Edit User" }
+                = link_to fa_icon("ban"), user_path(user), title: "Archive", method: :delete, data: { confirm: "Are you sure you want to archive this user?" }
+  .row.mt-lg
+    .col-md-4
+      = paginate_description @users
+    .col-md-8.text-right
+      = paginate @users, remote: true

@@ -1,0 +1,6 @@
+<% if headless_modal %>
+  $("#ajax-modal .modal-header").addClass("hidden");
+<% else %>
+  $("#ajax-modal .modal-header").removeClass("hidden");
+<% end %>
+<%= ajax_modal_render(modal_template || "form") %>

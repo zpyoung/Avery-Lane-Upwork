@@ -1,0 +1,2 @@
+$("#<%= editable_id(resource, params[:editable_attribute]) %> .editable-value").hide()
+<%= replace_content_with_render("##{editable_id(resource, params[:editable_attribute])} .editable-form", "common/editable/form", resource: resource, attribute: params[:editable_attribute], as: params[:editable_as], url: url ) %>

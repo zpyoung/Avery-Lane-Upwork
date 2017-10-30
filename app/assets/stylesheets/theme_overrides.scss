@@ -1,0 +1,139 @@
+.topnavbar {
+  .navbar-header {
+
+    background-color: #333;
+    background-image: none;
+    a {
+      &:hover {
+        color: #ccc;
+      }
+    }
+    .brand-logo {
+      text-align: left;
+      color: #fff;
+      img {
+        vertical-align: top;
+      }
+      span {
+        display: inline-block;
+        font-size: 20px;
+        font-weight: bold;
+        line-height: 22px;
+        padding: 6px 0 7px 10px;
+      }
+    }
+    .brand-logo-collapsed {
+      padding: 10px 15px;
+      >img {
+        margin: 0;
+      }
+    }
+  }
+  .nav-wrapper {
+    .navbar-right {
+      img {
+        margin-top: 12px;
+        vertical-align: top;
+      }
+      li.dropdown.dropdown-list {
+        .list-group-item {
+          a {
+            color: $text-color;
+            background-color: $table-bg-accent;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .topnavbar {
+    background-color: #333;
+    background-image: none;
+    .navbar-header {
+      width: 300px;
+    }
+    .navbar-nav {
+      >li {
+        >a {
+          &:hover, &:focus {
+            color: #ccc;
+          }
+        }
+      }
+      >.open {
+        >a {
+          box-shadow: 0 -3px 0 #ccc inset;
+          &:hover, &:focus {
+            box-shadow: 0 -3px 0 #ccc inset;
+            color: #ccc;
+          }
+        }
+      }
+    }
+  }
+}
+
+.uk-notify {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  left: 50%;
+  margin-left: -225px;
+  position: fixed;
+  top: 0px;
+  width: 450px;
+  z-index: 1060;
+  text-align: center;
+}
+
+.table > tbody > tr > td > .media img {
+  width: auto;
+  height: auto;
+}
+
+.btn {
+  font-size: 14px;
+}
+
+.panel-dark > .panel-heading {
+  background-color: #333;
+  border-color: #333;
+}
+
+.label-default {
+  background-color: $gray-dark;
+}
+
+.label-grey {
+  background-color: $gray;
+  color: $gray-darker;
+}
+
+.table.no-border {
+  td, th {
+    border: 0;
+  }
+}
+
+.table > tbody > tr.striped:nth-of-type(odd) {
+  background-color: #fafbfc;
+}
+
+.text-md {
+  font-size: 18px;
+}
+.text-lg {
+  font-size: 24px;
+}
+
+.no-link-color {
+  color: inherit;
+  &:hover, &:visited, &:focus {
+    color: inherit;
+  }
+}
+
+footer { 
+  position: relative !important;
+}

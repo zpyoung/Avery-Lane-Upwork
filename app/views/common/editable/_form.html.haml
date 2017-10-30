@@ -1,0 +1,15 @@
+= simple_form_for resource, remote: true, url: url, html: { id: editable_id(resource, attribute) } do |form|
+  = hidden_field_tag :editable_attribute, attribute
+  = hidden_field_tag :editable_as, as
+  .row
+    .col-lg-7
+      - if params[:editable_as].present?
+        = render "common/editable/#{params[:editable_as]}", form: form, attribute: attribute
+      - else
+        = form.input attribute, label: false
+    .col-lg-5.actions
+      = form.button :button, fa_icon("check"), class: "btn-success", title: "Save Changes"
+      = link_to fa_icon("times"), "#", class: "editable-cancel btn btn-default", title: "Cancel"
+
+:javascript
+  USFSVideos.Layout.initEditableForm("##{editable_id(resource, attribute)}");

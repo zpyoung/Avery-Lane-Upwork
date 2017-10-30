@@ -1,0 +1,13 @@
+%p.text-center SET YOUR PASSWORD
+= simple_form_for resource, as: resource_name, url: invitation_path(resource_name), html: { method: :put } do |f|
+  = f.error_notification
+  = f.hidden_field :invitation_token
+  .form-inputs
+    = f.input :first_name, label: "First Name"
+    = f.input :last_name, label: "Last Name"
+    = f.input :email, placeholder: "Email", disabled: true
+    = f.input :phone
+    = f.input :password, label: "Password", required: true, autofocus: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length)
+    = f.input :password_confirmation, label: "Confirm Your Password", required: true
+  .form_actions
+    = f.button :submit, "Set My Password", class: "btn-block btn-primary mt-lg mb-lg"

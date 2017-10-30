@@ -1,0 +1,7 @@
+= simple_form_for(list_item, html: { data: { remote: true }}) do |form|
+  .modal-body
+    = form.error_notification
+    = form.input :name
+  .modal-footer
+    = form.button :submit, class: "btn-primary", data: { disable_with: "Please wait…" }
+    = link_to "Cancel", "#", class: "btn btn-default", data: { dismiss: "modal" }, type: "button"

@@ -1,0 +1,6 @@
+<% if resource.errors.any? %>
+  <%= replace_content_with_render("##{editable_id(resource, params[:editable_attribute])} .editable-form", "common/editable/form", resource: resource, attribute: params[:editable_attribute], as: params[:editable_as], url: url) %>
+<% else %>
+  $("#<%= editable_id(resource, params[:editable_attribute]) %> .editable-form").empty();
+  $("#<%= editable_id(resource, params[:editable_attribute]) %> .editable-value").show().html("<%= escape_javascript(editable(resource, params[:editable_attribute], edit_url, params[:editable_as])) %>");
+<% end %>

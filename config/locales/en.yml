@@ -1,0 +1,50 @@
+en:
+  activerecord:
+    models:
+      user: "User"
+      
+    attributes:
+      user:
+        first_name: "First Name"
+        last_name: "Last Name"
+        current_password: "Current Password"
+        role: "Permission Level"
+        time_zone: "Time Zone"
+        
+    attribute_options:
+      user:
+        role:
+          admin: "Admin"
+          user: "Agent"
+            
+  date:
+    input:
+      formats:
+        - :default
+    formats:
+      default: "%m/%d/%Y"
+      short: "%B %-d"
+      long: "%B %-d, %Y"
+      weekdatelong: "%A, %B %-d, %Y"
+
+  time:
+    formats:
+      default: "%m/%d/%Y %I:%M %p"
+
+  datepicker:
+    dformat: "%m/%d/%Y"
+    pformat: "L"
+  timepicker:
+    dformat: "%I:%M %p"
+    pformat: "LT"
+    
+  helpers:
+    submit:
+      create: "Save"
+      update: "Save"
+      user:
+        create: "Invite User"
+      daily_report:
+        create: "Submit"
+        update: "Update"
+        

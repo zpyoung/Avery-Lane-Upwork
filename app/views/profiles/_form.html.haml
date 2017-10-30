@@ -1,0 +1,20 @@
+= simple_form_for(@user, url: profile_path, method: :patch, remote: true) do |form|
+  .modal-body
+    = form.error_notification
+    .row
+      = form.input :first_name, wrapper_html: { class: "col-sm-6" }
+      = form.input :last_name, wrapper_html: { class: "col-sm-6" }
+    = form.input :email
+    = form.input :phone
+    = form.input :current_password, hint: "We need your current password to confirm your changes."
+    .change_password_container
+      = form.input :password, label: "New Password", hint: "Leave blank if you don't want to change it."
+      = form.input :password_confirmation, label: "New Password Confirmation"
+
+  .modal-footer
+    = link_to "Change Password", "#", class: "pull-left btn btn-default", id: "change_password_link"
+    = form.button :submit, class: "btn-primary", data: { disable_with: "Please wait…" }
+    = link_to "Cancel", "#", class: "btn btn-default", data: { dismiss: "modal" }, type: "button"
+
+:javascript
+  Averylane.Profiles.initForm();

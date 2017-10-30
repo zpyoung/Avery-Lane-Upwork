@@ -1,0 +1,14 @@
+#ajax-modal.modal.fade{ data: { backdrop: "static" }}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{ "data-dismiss" => "modal", type: "button" } ×
+        %h4.modal-title
+      #ajax-modal-content
+        .modal-body
+          %p#ajax-modal-loading
+            .loader-inner.ball-pulse.text-center
+              %div
+              %div
+              %div
+

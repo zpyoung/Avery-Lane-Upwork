@@ -1,0 +1,10 @@
+#confirm-modal.modal.fade
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{ "data-dismiss" => "modal", type: "button" } ×
+        %h4 Confirmation
+      .modal-body
+      .modal-footer
+        %span#confirm-modal-link
+        = link_to "Cancel", "#", class: "btn btn-default", "data-dismiss" => "modal", type: "button"

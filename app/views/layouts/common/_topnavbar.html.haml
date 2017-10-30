@@ -1,0 +1,25 @@
+%header.topnavbar-wrapper
+  %nav.navbar.topnavbar{ role: "navigation" }
+    .navbar-header
+      = link_to root_path, class: "navbar-brand" do
+        .brand-logo
+          / = image_tag("logo.png", srcset: "#{image_path("logo@2x.png")} 2x", alt: "CBU")
+
+    .nav-wrapper
+      %ul.nav.navbar-nav.navbar-right
+        %li
+          = link_to "Dashboard", root_path
+        
+      
+        - if can?(:manage, User)
+          %li
+            = link_to "Admin", "#", data: { toggle: "dropdown" }
+            %ul.dropdown-menu.animated.fadeIn
+              - if can? :manage, User
+                %li= link_to "Users", users_path
+              
+        %li
+          = link_to current_user, edit_profile_path, data: { toggle: "ajax-modal", title: "Edit Profile" }, class: "inline"
+        %li
+          = link_to destroy_user_session_path, title: "Sign Out", method: :delete do
+            %em.icon-logout

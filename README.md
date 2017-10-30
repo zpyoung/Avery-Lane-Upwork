@@ -1,2 +1,1 @@
-# averylane
-Rails app for Avery Lane
+# Avery Lane app

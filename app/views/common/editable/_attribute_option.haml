@@ -1,0 +1,3 @@
+= form.input attribute, collection: form.object.class.send(attribute.pluralize + "_to_collection"), label: false, input_html: { data: { "allow-clear" => false }}, wrapper_html: { class: "select-control "}
+:javascript
+  $("##{editable_id(form.object, attribute)} select").select2();

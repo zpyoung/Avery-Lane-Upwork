@@ -1,0 +1,18 @@
+- content_for :base_content do
+  %body
+    .wrapper
+      .block-center.mt-xl.wd-xl
+        .panel.panel-dark.panel-flat
+          .panel-heading.text-center
+            %h3.mt-lg.mb-lg= Rails.configuration.app_name
+          .panel-body
+            - if flash[:notice]
+              .alert.alert-success.text-center= flash[:notice]
+            - if flash[:alert]
+              .alert.alert-danger.text-center= flash[:alert]
+            = yield
+            = render "devise/shared/links"
+        .p-lg.text-center
+          = render "layouts/common/footer"
+
+= render template: "layouts/base"

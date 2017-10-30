@@ -1,0 +1,5 @@
+.per-page
+  .form-group.select
+    = select_tag :per, options_for_select([25, 50, 100, 250].map(&:to_s), @per_page || params[:per]), data: { "allow-clear" => false, autosubmit: true }, class: "select form-control"
+  .panel-heading-filter-label.ml
+    per page

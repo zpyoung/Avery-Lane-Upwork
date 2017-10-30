@@ -1,0 +1,275 @@
+@import 'https://fonts.googleapis.com/css?family=Catamaran:400,800';
+
+.turbolinks-progress-bar {
+  height: 2px;
+  background-color:  #ccc;
+}
+
+.pagination {
+  margin: 0;
+}
+
+.pagination-description {
+  line-height: 35px;
+}
+
+.content-heading {
+  h1 {
+    font-size: 24px;
+    font-weight: normal;
+    line-height: 31px;
+    margin-bottom: 0;
+    margin-top: 0;
+    @media only screen and (max-width: $screen-md) {
+      margin-bottom: 10px;
+    }
+  }
+  .heading-actions {
+    margin-top: -4px;
+    text-align: right;
+    .select {
+      text-align: left;
+    }
+    @media only screen and (max-width: $screen-md) {
+      text-align: left;
+    }
+    .search-field {
+      font-size: 14px;
+    }
+  }
+}
+.actions {
+  white-space: nowrap;
+  a {
+    margin-left: 5px;
+  }
+}
+
+.fa {
+  min-width: 1px; // capybara-webkit click workaround
+}
+
+.sort_link {
+  color: #888;
+  &:hover, &:focus {
+    color: #888;
+    text-decoration: none;
+  }
+  .fa {
+    margin-left: 5px;
+    &.fa-sort {
+      color: #eee;
+    }
+  }
+}
+
+.search-field {
+  margin-bottom: 15px;
+  position: relative;
+  .fa {
+    left: 10px;
+    position: absolute;
+    top: 10px;
+    z-index: 2;
+  }
+  .form-control {
+    padding-left: 30px;
+    width: 100%;
+  }
+}
+
+.action-button {
+  margin-top: -4px;
+  text-align: right;
+  .active {
+    color: $brand-danger;
+  }
+}
+
+.modal-header {
+  text-align: center;
+  h4 {
+    margin: 0 20px;
+  }
+}
+
+.fileinput-button {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  span {
+    cursor: pointer;
+  }
+  i {
+    margin-top: 1px;
+  }
+  input {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: 0;
+    opacity: 0;
+    -ms-filter: "alpha(opacity=0)";
+    font-size: 200px !important;
+    direction: ltr;
+    cursor: pointer;
+  }
+}
+
+.topnavbar {
+  ul.nav.navbar-right {
+    >li {
+      >a {
+        display: inline-block;
+      }
+    }
+  }
+}
+
+.select2-container--bootstrap {
+  .select2-selection {
+    font-family: inherit;
+    .select2-selection__clear {
+      margin-left: 10px;
+    }
+  }
+  .select2-selection--single {
+    height: 35px;
+  }
+}
+
+.form-inline {
+  .form-group.select {
+    min-width: 200px;
+  }
+}
+
+.inline-boolean {
+  margin-top: 24px;
+}
+
+.tooltip {
+  p {
+    margin: 5px;
+  }
+}
+
+.editable-buttons {
+  .btn {
+    font-size: 13px;
+  }
+}
+
+.editable {
+  .editable-value {
+    .editable-link {
+      border-bottom: 1px dashed $text-muted;
+      white-space: pre-wrap;
+      &.blank {
+        color: $text-muted;
+        cursor: pointer;
+      }
+    }
+  }
+  .editable-form {
+    padding-right: 7px;
+    .actions {
+      margin-top: 10px;
+      overflow: hidden;
+      text-align: right;
+      @media (min-width: $screen-lg) {
+        margin-top: 0px;
+      }
+      .btn {
+        padding: 6px 0;
+        width: 40px;
+      }
+      .btn + .btn {
+        margin-left: 5px;
+        margin-right: -7px;
+      }
+    }
+    .form-group {
+      margin-bottom: 0;
+      margin-right: -7px;
+    }
+  }
+}
+
+.panel-heading {
+  .panel-heading-search {
+    line-height: 33px;
+  }
+}
+.panel-heading-controls {
+  margin: 0 -2px 8px -2px;
+  @media (min-width: 992px) {
+    margin-bottom: -7px;
+  }
+  form.heading-form, .btn, .panel-title, .form-group, .panel-heading-filter-label {
+    margin: 0 2px 7px 2px;
+  }
+  .dropdown {
+    display: inline;
+    .dropdown-menu {
+      margin: 12px 0 0 2px;
+    }
+  }
+  .input-group-btn:last-child > .btn {
+    margin: 0 0 0 -1px;
+  }
+  .panel-heading-filter-label {
+    display: inline-block;
+    line-height: 35px;
+    vertical-align: middle;
+  }
+  .form-group.select {
+    vertical-align: top;
+    min-width: 200px;
+    &.auto-width {
+      min-width: auto;
+    }
+  }
+  .per-page {
+    display: inline-block;
+    white-space: nowrap;
+    .form-group.select {
+      display: inline-block;
+      min-width: 0;
+    }
+  }
+  div.checkbox {
+    margin-top: 7px;
+  }
+}
+
+.per-page {
+  display: inline-block;
+  white-space: nowrap;
+  .form-group.select {
+    display: inline-block;
+    min-width: 0;
+  }
+  .panel-heading-filter-label {
+    display: inline-block;
+    line-height: 35px;
+    vertical-align: top;
+  }
+}
+
+.nested-fields {
+  a.close {
+    margin-top: 33px;
+  }
+}
+
+form.simple_form {
+  .check_boxes {
+    .col-sm-6.checkbox {
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+  }
+}

@@ -1,0 +1,22 @@
+- content_for :base_content do
+  %body.layout-h
+    .wrapper
+      = render "layouts/common/topnavbar"
+      .section
+        .content-wrapper.pb0
+          .content-heading
+            - if content_for?(:top_content)
+              = content_for :top_content
+            - else
+              .row
+                .col-lg-5
+                  = content_for :title
+                .col-lg-7
+                  .action-button
+                    = content_for :action_button if content_for? :action_button
+          .row
+            = content_for?(:application_content) ? yield(:application_content) : yield
+      = render "layouts/common/footer"
+    = render "common/ajax_modal/ajax_modal"
+    = render "common/confirm_modal"
+= render template: "layouts/base"

@@ -1,0 +1,16 @@
+- page_title "Users"
+- content_for :action_button do
+  = link_to "Add User", new_user_path, class: "btn btn-primary", data: { toggle: "ajax-modal", title: "Add User" }
+
+= search_form_for @search, remote: true do |form|
+  .row
+    .col-md-9
+      .search-field
+        = fa_icon("search")
+        = form.search_field :full_name_cont, placeholder: "Search by name…", class: "form-control", autofocus: true
+    .col-md-3
+      = render "common/per_page"
+  = render "users"
+
+:javascript
+  Averylane.Users.initIndex();
