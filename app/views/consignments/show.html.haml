@@ -16,7 +16,7 @@
                     %h5
                         %strong
                             %i.fa.fa-calendar
-                            Avilability Details:
+                            Availability Details:
                     - unless @consignment.date_available.blank?
                         %p Items will be available: #{@consignment.date_available.strftime('%m/%e/%Y')}
                     - else

@@ -1,13 +1,12 @@
 .col-xs-12.imageBox
+	.row.uploadedImages#uploadedImages
+	%br/
 	.row
 		.col-xs-12
 			%span.btn.fileInput-dropzone
-				%p.fileInput-link Select image(s) to add item
+				%p.fileInput-link.visible-lg.visible-md Drag image(s) or click here to add items
+				%p.fileInput-link.visible-xs.visible-sm Click here to add items
 				= f.file_field :images, :multiple => true
-
-	%br/
-	.row.uploadedImages#uploadedImages
-
 
 :javascript
 	// Creates random 5 character id
