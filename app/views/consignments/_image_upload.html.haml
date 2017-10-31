@@ -1,0 +1,147 @@
+.col-xs-12.imageBox
+	.row
+		.col-xs-12
+			%span.btn.fileInput-dropzone
+				%p.fileInput-link Select image(s) to add item
+				= f.file_field :images, :multiple => true
+
+	%br/
+	.row.uploadedImages#uploadedImages
+
+
+:javascript
+	// Creates random 5 character id
+	function makeid() {
+	  var text = "";
+	  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+	  for (var i = 0; i < 5; i++)
+	    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+	  return text;
+	}
+	//script to open image selection on click
+	$('.fileInput-link').click(function() {
+		$('input[type=file]').click();
+	});
+	function deleteGridItem(key){
+		var inputToRemove = $('.directUpload').find('.' + key);
+		$(inputToRemove).each(function(i){
+			$(this).delay(2*i).fadeOut(500);
+				$(this).animate({
+					"opacity" : "0",
+					},{
+					"complete" : function() {
+						$(this).remove();
+				}
+			});
+		});
+		$(".bar").
+			css('display', 'none')
+	}
+	// Script for image upload to aws using jquery-fileupload plugin and aws-sdk
+	$(function() {
+		$('.directUpload').find("input:file").each(function(i, elem) {
+			var fileInput    = $(elem);
+			var form         = $(fileInput.parents('form:first'));
+			var submitButton = form.find('input[type="submit"]');
+			var progressBar  = $("<div class='bar'></div>");
+			var barContainer = $("<div class='progress'></div>").append(progressBar);
+			fileInput.after(barContainer);
+			fileInput.fileupload({
+				fileInput:       fileInput,
+				url:             form.data('url'),
+				type:            'POST',
+				autoUpload:       true,
+				formData:         form.data('form-data'),
+				paramName:        'file', // S3 does not like nested name fields i.e. name="user[avatar_url]"
+				dataType:         'XML',  // S3 returns XML if success_action_status is set to 201
+				replaceFileInput: false,
+				limitMultiFileUploads: 12,
+				maxNumberOfFiles: 12,
+				progressall: function (e, data) {
+					var progress = parseInt(data.loaded / data.total * 100, 10);
+					progressBar.css('width', progress + '%')
+				},
+				start: function (e) {
+					submitButton.prop('disabled', true);
+					progressBar.
+						css('background', 'green').
+						css('display', 'block').
+						css('width', '0%').
+						text("Loading...");
+				},
+				done: function(e, data) {
+					submitButton.prop('disabled', false);
+					progressBar.text("Uploading done");
+					// extract key and generate URL from response
+					var key   = $(data.jqXHR.responseXML).find("Key").text();
+					var url   = '//' + form.data('host') + '/' + key;
+					var imageId = makeid();
+					var name= "";
+					if(fileInput[0].files.length > 0 ){
+						name = fileInput[0].files[0].name
+					} else {
+						name = "";
+					}
+					// create hidden field
+
+					var input = '<input type="hidden" name="consignment[items_attributes][][image]" value="'+url+'" class="'+imageId+'">'
+					// form.append(input);
+
+					var options = #{@types};
+					var selectOptions = '';
+
+					for (var i = 0; i < options.length; i++) {
+						var newOption = '<option value="'+options[i]+'">'+options[i]+'</option>'
+						selectOptions = selectOptions + " " + newOption;
+					}
+
+					var imageGridItem = '<div class="row itemRow '+imageId+'">' +
+						'<div class="col-xs-12">' +
+							'<div class="panel panel-default gridImagePanel">' +
+								'<div class="panel-body">' +
+									'<div class="col-xs-3 col-lg-2">' +
+										'<div class="gridImageBox">' +
+											'<img class="img-responsive" src="'+url+'" alt="'+name+'"/>' +
+									'	</div>' +
+									'</div>' +
+									'<div class="col-xs-9 col-lg-10">' +
+										'<div class="description">' +
+											'<label> Item Description</label>'+
+											'<textarea class="form-control" rows="2" name="consignment[items_attributes][][description]"></textarea>' +
+											'<br>' +
+											'<div class="form-group">'+
+												'<label>What type of item is this:</label>'+
+												'<select name="consignment[items_attributes][][item_type]" class="form-control">'+
+													'<option value="" selected disabled>Select One</option>'+
+													selectOptions +
+												'</select>'+
+											'</div>'+
+										'</div>' +
+									'</div>' +
+									'<div class="col-xs-12 col-lg-12">' +
+									'</div>' +
+								'</div>' +
+								'<div class="panel-footer text-right">' +
+									'<a onclick="deleteGridItem(\''+imageId+'\')">' +
+										'<i class="fa fa-trash-o"></i>' +
+									'</a>' +
+									input +
+								'</div>' +
+							'</div>' +
+						'</div>' +
+					'</div>';
+
+					$(".uploadedImages").append(imageGridItem);
+				},
+				fail: function(e, data) {
+					submitButton.prop('disabled', false);
+					progressBar.
+					css("background", "red").
+					text("Failed");
+				}
+			});
+		});
+
+	});

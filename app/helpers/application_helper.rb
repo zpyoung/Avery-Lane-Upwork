@@ -10,6 +10,10 @@ module ApplicationHelper
     [content_for(:title), Rails.configuration.app_name].compact.join(" – ").html_safe
   end
 
+  def page_title_content_consumer
+    "Avery Lane - Submit Consignment Items"
+  end
+
   def paginate_description(scope)
     if scope.count > 0
       content = "Showing #{number_with_delimiter(scope.offset_value + 1)}–#{number_with_delimiter(scope.offset_value + scope.count)} of #{number_with_delimiter(scope.total_count)} #{"entry".pluralize(scope.total_count)}"
@@ -34,7 +38,7 @@ module ApplicationHelper
   def append_with_render(selector, *render_options)
     %{$("#{selector}").append("#{escape_javascript(render(*render_options))}");}.html_safe
   end
-  
+
   def show_flash
     if flash[:alert].present?
       raw %{$.notify("#{flash[:alert]}", { status: "danger" });}
@@ -42,7 +46,7 @@ module ApplicationHelper
       raw %{$.notify("#{flash[:notice]}", { status: "success" });}
     end
   end
-  
+
   def editable_id(resource, attribute)
     ["editable", dom_id(resource), attribute].compact.join("_")
   end

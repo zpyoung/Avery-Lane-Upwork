@@ -1,0 +1,49 @@
+.container
+    .pageTitle
+    .row
+        .col-xs-12
+            %h4 Submission Summary
+            .panel
+                .panel-body
+                    %h5
+                        %strong
+                            %i.fa.fa-user
+                            Contact Details:
+                    %p Name: #{@consignment.first_name} #{@consignment.last_name}
+                    %p Email: #{@consignment.email}
+                    %p Phone: #{@consignment.phone}
+                    %hr/
+                    %h5
+                        %strong
+                            %i.fa.fa-calendar
+                            Avilability Details:
+                    - unless @consignment.date_available.blank?
+                        %p Items will be available: #{@consignment.date_available.strftime('%m/%e/%Y')}
+                    - else
+                        %p No date chosen
+                    %hr/
+                    %h5
+                        %strong
+                            %i.fa.fa-truck
+                            Pickup Details:
+                    - if @consignment.need_pickup
+                        %p Item pickup requested.
+                    -else
+                        %p Item pickup is not needed.
+
+
+            %h4 Items Details: (#{@consignment.items.count} Total)
+    - @consignment.items.each do |item|
+        .row
+            .col-xs-12
+                .panel
+                    .panel-body
+                        .col-xs-3.col-lg-2
+                            .imageBox
+                                = image_tag item.image, class: "img-responsive"
+                        .col-xs-9.col-lg-10
+                            %p Description:
+                            %p= item.description
+                            %br/
+                            %p Item Type:
+                            %p= item.item_type

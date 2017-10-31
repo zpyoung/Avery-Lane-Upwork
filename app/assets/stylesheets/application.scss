@@ -1,5 +1,5 @@
 @import "theme_variables";
-
+@import "jquery-ui";
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import "font-awesome";
@@ -13,3 +13,7 @@
 
 @import "theme_overrides";
 @import "layout";
+@import "jquery.fileupload";
+@import "jquery.fileupload-ui";
+@import "consignments";
+@import "new_consignments";

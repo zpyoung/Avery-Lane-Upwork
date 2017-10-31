@@ -6,10 +6,14 @@ Rails.application.routes.draw do
       patch :resend_invite
     end
   end
-  
+
+  resources :consignments do
+    get "/summary", to: "consignments#summary", as: :summary
+  end
+
   [:teams, :regions, :list_roles].each do |list_items|
     resources list_items, except: :show
   end
-  
+
   root "dashboard#index"
 end

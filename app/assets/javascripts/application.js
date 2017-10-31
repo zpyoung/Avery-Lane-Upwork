@@ -25,8 +25,11 @@
 //= require select2
 //= require cocoon
 //= require turbolinks
-  
+
 //= require jquery.storageapi
+//= require maskedinput
 //= require theme
+//= require jquery-fileupload/basic
+//= require jquery-fileupload/vendor/tmpl
 
 //= require_tree .

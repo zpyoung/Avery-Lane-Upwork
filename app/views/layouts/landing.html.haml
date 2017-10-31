@@ -1,0 +1,38 @@
+!!!
+%html{ lang: "en"}
+  %head
+    %meta{ charset: "utf-8" }
+    %meta{ content: "IE=edge", "http-equiv" => "X-UA-Compatible" }
+    %meta{ content: "width=device-width, initial-scale=1, maximum-scale=1", name: "viewport" }
+    %meta{ name: "turbolinks-cache-control", content: "no-cache" }
+    %title= page_title_content_consumer
+    = stylesheet_link_tag "application", media: "all", 'data-turbolinks-track': 'reload'
+    = javascript_include_tag "application", 'data-turbolinks-track': 'reload'
+    = favicon_link_tag "https://static.wixstatic.com/media/46d93d_f785459939fa4502997108ae4098488f.jpg/v1/fill/w_32%2Ch_32%2Clg_1%2Cusm_0.66_1.00_0.01/46d93d_f785459939fa4502997108ae4098488f.jpg"
+    = csrf_meta_tags
+    = yield(:head)
+  %body#landingPage
+    %nav.navbar.navbar-default.navbar-fixed-top
+      .row.flashMessageTray{style: "display: none;"}
+        - flash.each do |key, value|
+          %div{:class => "alert alert-#{key} alert-dismissable"}
+            %a.close{"aria-label" => "close", "data-dismiss" => "alert", :href => "#"} ×
+            %raw.strong#notice= value.html_safe
+          :javascript
+            setTimeout("$('.flashMessageTray').slideDown(\"slow\")", 100)
+            setTimeout("$('.alert-notice').slideUp('slow')", 4000)
+      .container-fluid
+        .navbar-header
+          %button.navbar-toggle{"data-target" => "#landingNavbar", "data-toggle" => "collapse", :type => "button"}
+            %i.fa.fa-bars
+          = link_to "https://www.averylanehome.com", class: "navbar-brand" do
+            = image_tag 'averylane-logo.png', class: 'logo-image', alt: "Avery Lane"
+        #landingNavbar.collapse.navbar-collapse
+          %ul.nav.navbar-nav.navbar-right
+            - if controller.action_name === "show"
+              %li
+                = link_to "Submit More Items", new_consignment_path, class: "btn btn-primary btnSquare"
+            %li
+              = link_to "Home", "https://www.averylanehome.com", class: "btn btnSquare"
+
+    = yield

@@ -1,0 +1,13 @@
+.nested-fields
+  .row
+    .col-xs-5.col-lg-2
+      %img{src: "http://via.placeholder.com/100x100", class: "img-responsive"}
+    .col-xs-6.col-lg-9
+      = f.input :description
+    .col-xs-1.col-lg-1
+      = link_to_remove_association "Remove Item", f
+    .col-xs-12
+      = f.input :type
+  .row
+    .col-xs-12
+      = link_to_remove_association "Remove Item", f

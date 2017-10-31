@@ -8,6 +8,7 @@ gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.2'
 gem "jquery-rails"
+gem 'jquery-ui-rails'
 gem "turbolinks", "~> 5"
 
 gem "bootstrap-sass"
@@ -31,8 +32,12 @@ gem "responders"
 gem "roadie-rails", '~> 1.0'
 gem "select2-rails"
 gem "simple_form"
+gem 'aws-sdk', '~> 2.6.1'
+gem "jquery-fileupload-rails"
 gem "simple-line-icons-rails"
 gem 'rename'
+gem 'figaro'
+gem 'maskedinput-rails'
 
 group :development, :test do
   gem 'byebug', platform: :mri
