@@ -83,17 +83,36 @@
 					} else {
 						name = "";
 					}
-					// create hidden field
+					var options = gon.types;
+					var selectOptions = '';
+					for (var i = 0; i < options.length; i++) {
+						var newOption = '<option value="'+options[i]+'">'+options[i]+'</option>'
+						selectOptions = selectOptions + " " + newOption;
+					}
 
 					var input = '<input type="hidden" name="consignment[items_attributes][][image]" value="'+url+'" class="'+imageId+'">'
 					// form.append(input);
 
-					var options = #{@types};
-					var selectOptions = '';
+					var typeSelect =
+					'<div class="itemInput pull-left">'+
+						'<div class="form-group">'+
+							'<label>What type of item is this:</label>'+
+							'<select name="consignment[items_attributes][][item_type]" class="form-control customSelectBox">'+
+								'<option value="" selected disabled>Select One</option>'+
+								selectOptions +
+							'</select>'+
+						'</div>'+
+					'</div>';
+					var valueInput =
+					'<div class="itemInput pull-right valueInput">'+
+						'<label>Estimated Value:</label>' +
+						'<input class="form-control" type="text" name="consignment[items_attributes][][value]">' +
+					'</div>';
 
-					for (var i = 0; i < options.length; i++) {
-						var newOption = '<option value="'+options[i]+'">'+options[i]+'</option>'
-						selectOptions = selectOptions + " " + newOption;
+					if("#{controller.action_name}" === "admin") {
+						valueInput = valueInput
+					} else {
+						valueInput = "";
 					}
 
 					var imageGridItem = '<div class="row itemRow '+imageId+'">' +
@@ -110,16 +129,9 @@
 											'<label> Item Description</label>'+
 											'<textarea class="form-control" rows="2" name="consignment[items_attributes][][description]"></textarea>' +
 											'<br>' +
-											'<div class="form-group">'+
-												'<label>What type of item is this:</label>'+
-												'<select name="consignment[items_attributes][][item_type]" class="form-control">'+
-													'<option value="" selected disabled>Select One</option>'+
-													selectOptions +
-												'</select>'+
-											'</div>'+
+											typeSelect +
+											valueInput +
 										'</div>' +
-									'</div>' +
-									'<div class="col-xs-12 col-lg-12">' +
 									'</div>' +
 								'</div>' +
 								'<div class="panel-footer text-right">' +

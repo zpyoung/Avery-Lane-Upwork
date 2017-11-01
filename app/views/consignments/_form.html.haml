@@ -4,7 +4,8 @@
     = f.input :last_name, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-6"}, label: "Last Name", placeholder: "Smith"
     = f.input :email, wrapper_html: {class: "col-xs-12 col-lg-6"}, placeholder: "janesmith@example.com"
     = f.input :phone, input_html: { class: 'phoneInput' }, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-6"}, placeholder: "555-555-5555"
-    = f.input :date_available, :as => :date_picker, wrapper_html: {class: "col-xs-12 col-sm-6 col-md-6"}, label: "What date will item(s) be available?", placeholder: "#{Date.today.strftime('%m/%e/%Y')}"
+    = f.input :date_available, :as => :date_picker, wrapper_html: {class: "col-xs-12 col-sm-6 col-md-6"}, label: "What date will item(s) be available?"
+    = f.input :date_available, :as => :hidden, input_html: {class: "hiddenDateInput"}
     = f.input :need_pickup, as: :radio_buttons, wrapper_html: {class: "col-xs-12 col-md-6"}, label: "Do these items need to be picked up?"
 
     .row
@@ -14,14 +15,19 @@
           = render partial: "image_upload", locals: {s3_direct_post: @s3_direct_post, :f => f}
     .row
       .col-xs-12
+        %br/
         = f.submit "Submit Items", class: "btn squareBtn submitBtn"
 
   :javascript
     $(".phoneInput").mask("999-999-9999")
     $('.datetimepicker').datetimepicker({
-      minDate: "#{Date.today}"
+      minDate: "#{Date.today}",
+    }).on("dp.change", function(e){
+      console.log(e.date._d);
+      $(".hiddenDateInput").val(e.date._d);
     });
     // toggles datetimepicker on input click
     $(".datetimepicker input").click(function(){
       $(".input-group-btn .btn").click();
+      console.log("test");
     })

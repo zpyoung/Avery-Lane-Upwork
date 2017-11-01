@@ -1,6 +1,6 @@
 class ConsignmentsController < ApplicationController
-    before_action :set_s3_direct_post, only: [:new, :edit, :create, :update]
-    layout 'landing', only: %i[new landing show]
+    before_action :set_s3_direct_post, only: [:new, :edit, :create, :update, :admin]
+    layout 'landing', only: %i[new landing show admin]
 
     def index
         @consignments = Consignment.all
@@ -10,11 +10,18 @@ class ConsignmentsController < ApplicationController
         @consignment = Consignment.find(params[:id])
     end
 
-
-
     def new
         @consignment = Consignment.new
-        @types = ["Dining or Breakfast", "Accent Table or Desk", "Art, Accessories or Other", "Antiques"]
+        @consignment.need_pickup = false
+        @types = ['Dining or Breakfast', 'Accent Table or Desk', 'Art, Accessories or Other', 'Antiques']
+        gon.types = @types;
+    end
+
+    def admin
+        @consignment = Consignment.new
+        @consignment.need_pickup = false
+        @types = ['Dining or Breakfast', 'Accent Table or Desk', 'Art, Accessories or Other', 'Antiques']
+        gon.types = @types;
     end
 
     def create
@@ -34,7 +41,7 @@ class ConsignmentsController < ApplicationController
     protected
 
         def consignment_params
-            params.require(:consignment).permit(:first_name, :last_name, :email, :phone, :need_pickup, :date_available, items_attributes: [:id, :image, :description, :item_type, :_destroy])
+            params.require(:consignment).permit(:first_name, :last_name, :email, :phone, :need_pickup, :date_available, items_attributes: [:id, :image, :description, :item_type, :_destroy, :value, :cost, :price])
         end
 
     private

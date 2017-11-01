@@ -6,6 +6,7 @@
     %meta{ content: "width=device-width, initial-scale=1, maximum-scale=1", name: "viewport" }
     %meta{ name: "turbolinks-cache-control", content: "no-cache" }
     %title= page_title_content_consumer
+    = Gon::Base.render_data
     = stylesheet_link_tag "application", media: "all", 'data-turbolinks-track': 'reload'
     = javascript_include_tag "application", 'data-turbolinks-track': 'reload'
     = favicon_link_tag "https://static.wixstatic.com/media/46d93d_f785459939fa4502997108ae4098488f.jpg/v1/fill/w_32%2Ch_32%2Clg_1%2Cusm_0.66_1.00_0.01/46d93d_f785459939fa4502997108ae4098488f.jpg"

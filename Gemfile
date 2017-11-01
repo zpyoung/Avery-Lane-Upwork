@@ -38,6 +38,7 @@ gem "simple-line-icons-rails"
 gem 'rename'
 gem 'figaro'
 gem 'maskedinput-rails'
+gem 'gon'
 
 group :development, :test do
   gem 'byebug', platform: :mri

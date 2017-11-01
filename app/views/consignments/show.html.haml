@@ -27,9 +27,9 @@
                             %i.fa.fa-truck
                             Pickup Details:
                     - if @consignment.need_pickup
-                        %p Item pickup requested.
+                        %p.text-success Item pickup requested.
                     -else
-                        %p Item pickup is not needed.
+                        %p.text-danger Item pickup is not needed.
 
 
             %h4 Items Details: (#{@consignment.items.count} Total)
@@ -42,8 +42,13 @@
                             .imageBox
                                 = image_tag item.image, class: "img-responsive"
                         .col-xs-9.col-lg-10
-                            %p Description:
-                            %p= item.description
-                            %br/
-                            %p Item Type:
-                            %p= item.item_type
+                            %p
+                                %strong Description: &nbsp;
+                                %span= item.description
+                            %p
+                                %strong Item Type: &nbsp;
+                                %span= item.item_type
+                            - if item.value
+                                %p
+                                    %strong Estimated Value: &nbsp;
+                                    %span= number_to_currency(item.value)

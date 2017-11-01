@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   resources :consignments do
     get "/summary", to: "consignments#summary", as: :summary
   end
-
+  get "/admin", to: "consignments#admin", as: :admin
   [:teams, :regions, :list_roles].each do |list_items|
     resources list_items, except: :show
   end
