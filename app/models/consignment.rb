@@ -10,4 +10,11 @@ class Consignment < ApplicationRecord
     validates :date_available, presence: true
     validates :need_pickup, inclusion: { in: [ true, false ] }
 
+    validates :email, presence: true
+
+    validates :address_1_mailing, presence: true
+    validates :city_mailing, presence: true
+    validates :state_mailing, presence: true
+    validates :zip_mailing, presence: true
+
 end

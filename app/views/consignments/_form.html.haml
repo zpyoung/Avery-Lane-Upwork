@@ -4,25 +4,25 @@
       = f.input :consigner_number, label: "Consigner #", wrapper_html: {class: "col-xs-12"}
     = f.input :admin_created, :as => :hidden, value: false, input_html: {class: "adminCreated"}
     = f.input :dashboard_modified, :as => :hidden, value: false, input_html: {class: "dashboardModified"}
-    = f.input :first_name, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-6"}, label: "First Name", placeholder: "Jane"
-    = f.input :last_name, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-6"}, label: "Last Name", placeholder: "Smith"
-    = f.input :email, wrapper_html: {class: "col-xs-12 col-lg-6"}, placeholder: "janesmith@example.com"
-    = f.input :phone, label: "Mobile Phone", input_html: { class: 'phoneInput' }, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-3"}, placeholder: "555-555-5555"
+    = f.input :first_name, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-6"}, label: "First Name", placeholder: "Jane", input_html: {class: "checkValid"}
+    = f.input :last_name, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-6"}, label: "Last Name", placeholder: "Smith", input_html: {class: "checkValid"}
+    = f.input :email, wrapper_html: {class: "col-xs-12 col-lg-6"}, placeholder: "janesmith@example.com", input_html: {class: "checkValid"}
+    = f.input :phone, label: "Mobile Phone", input_html: { class: 'phoneInput checkValid' }, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-3"}, placeholder: "555-555-5555"
 
     = f.input :home_phone, input_html: { class: 'phoneInput' }, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-3"}, placeholder: "555-555-5555"
     .col-lg-6.col-xs-12.mailingAddressBox
       .panel.panel-primary
         .panel-body
           %p.pull-left Mailing Address
-          = f.input :address_1_mailing, label: "Address 1", input_html: { class: 'mailingInput' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-12"}, placeholder: "123 Avery Lane"
+          = f.input :address_1_mailing, label: "Address 1", input_html: { class: 'mailingInput checkValid' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-12"}, placeholder: "123 Avery Lane"
           = f.input :address_2_mailing, label: "Address 2", input_html: { class: 'mailingInput' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-12"}, placeholder: "Suite 20"
-          = f.input :city_mailing, label: "City", input_html: { class: 'mailingInput' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-12"}, placeholder: "Scottsdale"
-          = f.input :state_mailing, label: "State", input_html: { class: 'mailingInput' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-4"}, placeholder: "AZ"
-          = f.input :zip_mailing, label: "ZIP", input_html: { class: 'mailingInput' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-8"}, placeholder: "85205"
+          = f.input :city_mailing, label: "City", input_html: { class: 'mailingInput checkValid' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-12"}, placeholder: "Scottsdale"
+          = f.input :state_mailing, label: "State", input_html: { class: 'mailingInput checkValid' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-4"}, placeholder: "AZ"
+          = f.input :zip_mailing, label: "ZIP", input_html: { class: 'mailingInput checkValid' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-8"}, placeholder: "85205"
 
 
     = f.input :date_available, :as => :date_picker, wrapper_html: {class: "col-xs-12 col-sm-6 col-md-6"}, label: "What date will item(s) be available?"
-    = f.input :date_available, :as => :hidden, input_html: {class: "hiddenDateInput"}
+    = f.input :date_available, :as => :hidden, input_html: {class: "hiddenDateInput checkValid"}
     = f.input :need_pickup, as: :radio_buttons, wrapper_html: {class: "col-xs-12 col-md-6"}, label: "Do these items need to be picked up?"
     .col-lg-6.col-xs-12.pickupAddressBox
       .panel.panel-primary
@@ -45,25 +45,53 @@
     .row
       .col-xs-12
         %br/
-        = f.submit "Submit Items", class: "btn squareBtn submitBtn"
+        = f.submit "Submit Items", class: "btn squareBtn submitBtn", data: {"disable-with"=>"Saving"}
 
   -if controller.action_name === "admin"
     :javascript
       $(".adminCreated").val(true);
 
   :javascript
+    // $(".consignmentForm .required").on("keyup keypress", validateFields())
+    $(".consignmentForm .submitBtn").hover(function(){validateFields()})
+    function validateFields() {
+      var invalids = checkInputs();
+      if (invalids > 0 ) {
+        $(".consignmentForm .submitBtn").addClass("disabled")
+      } else {
+        $(".consignmentForm .submitBtn").removeClass("disabled")
+      }
+      console.log(invalids)
+    }
+
+    function checkInputs() {
+      var invalids = [];
+      $(".consignmentForm .checkValid").each(function(i){
+        if ($(this).val() === "" ) {
+          invalids.push(i)
+        }
+      });
+      return invalids.length
+    }
+
+    //Disables submit on enter
+    $('.consignmentForm form').on('keyup keypress', function(e) {
+      var keyCode = e.keyCode || e.which;
+      if (keyCode === 13) {
+        e.preventDefault();
+        return false;
+      }
+    });
 
     $(".phoneInput").mask("999-999-9999")
     $('.datetimepicker').datetimepicker({
       minDate: "#{Date.today}",
     }).on("dp.change", function(e){
-      console.log(e.date._d);
       $(".hiddenDateInput").val(e.date._d);
     });
     // toggles datetimepicker on input click
     $(".datetimepicker input").click(function(){
       $(".input-group-btn .btn").click();
-      console.log("test");
     })
     //
     // if($("consignment[need_pickup]").val() === true){
@@ -73,7 +101,6 @@
     $("input:radio[name='consignment[need_pickup]']").change(function(){
       var value = $(this).val();
       $(".pickupAddressBox").toggle();
-      console.log(value);
       // if(value === true) {
       //   $(".pickupAddressBox").toggle();
       // }

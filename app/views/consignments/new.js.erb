@@ -1,4 +1,9 @@
 $('#consignment_modal').html("<%= j render 'new' %>");
 $('#consignment_modal').modal('show');
+// sets the consignment as dashboard edited
 $(".dashboardModified").val(true);
+// shows consigner_number input
 $(".consignmentNumber").removeClass("hidden");
+// changes submit btn to "Save"
+$("input.submitBtn").text("Save");
+$("input.submitBtn").val("Save");

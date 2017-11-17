@@ -16,6 +16,7 @@
                                 - @consignments.each do |c|
                                     %tr
                                         %td= c.updated_at.strftime("%D - %I:%M%p")
+                                        %td &num;#{c.consigner_number}
                                         %td #{c.first_name} #{c.last_name}
                                         %td= c.items.count
                                         %td.actions
@@ -27,6 +28,7 @@
         .modal.fade#consignment_modal
 
 :javascript
+    $.fn.dataTable.moment( 'M/D/YY - hh:mmA' );
     $('.consignmentTable').DataTable( {
         "language": {
         "search": "",
@@ -42,6 +44,7 @@
         "bInfo": false,
         "bAutoWidth": false,
         "aoColumns": [
+        	null,
         	null,
         	null,
         	null,
