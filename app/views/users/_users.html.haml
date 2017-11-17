@@ -6,7 +6,6 @@
           %th= sort_link(@search, :last_name, [:first_name, :last_name], "Name", {}, remote: true)
           %th= sort_link(@search, :email, {}, remote: true )
           %th= sort_link(@search, :phone, {}, remote: true )
-          %th= sort_link(@search, :role, {}, remote: true )
           %th
           %th
       %tbody
@@ -15,7 +14,6 @@
             %td= user
             %td= user.email
             %td= user.phone
-            %td= user.role_to_human
             %td.text-right
               - if user.support?
                 %span.label.label-success.mr-lg Support

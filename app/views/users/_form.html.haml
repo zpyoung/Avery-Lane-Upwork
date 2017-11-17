@@ -7,15 +7,15 @@
     .row
       = form.input :email, required: true, wrapper_html: { class: "col-sm-6" }
       = form.input :phone, wrapper_html: { class: "col-sm-6" }
-    .row
-      = form.input :role, collection: User.roles_to_collection, wrapper_html: { class: "col-sm-6" }, input_html: { data: { "allow-clear" => false }}
-      .col-sm-6
-        %label Settings
-        .inline-checkboxes
-          = form.input :support
+    -# .row
+    -#   = form.input :role, collection: User.roles_to_collection, wrapper_html: { class: "col-sm-6" }, input_html: { data: { "allow-clear" => false }}
+    -#   .col-sm-6
+    -#     %label Settings
+    -#     .inline-checkboxes
+    -#       = form.input :support
 
-    = form.input :time_zone do
-      = form.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, { default: "Arizona" }, class: "form-control text-right", data: { "allow-clear" => false  }
+    -# = form.input :time_zone do
+    -#   = form.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, { default: "Arizona" }, class: "form-control text-right", data: { "allow-clear" => false  }
 
   .modal-footer
     = form.button :submit, class: "btn btn-primary", data: { disable_with: "Please wait…" }
