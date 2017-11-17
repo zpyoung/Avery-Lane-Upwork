@@ -81,9 +81,9 @@ class ConsignmentsController < ApplicationController
 	end
 
 	def duplicate_consignment
-		binding.pry
 		@old_consignment = Consignment.find(params[:consignment_id])
 		@new_consignment = @old_consignment.dup
+		@new_consignment.updated_at = Time.now
 		respond_to do |format|
 		  if @new_consignment.save
 			format.html { redirect_to root_path, notice: "Success! Consignment has been Duplicated!" }
