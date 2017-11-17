@@ -1,5 +1,7 @@
 .col-xs-12.imageBox
 	.row.uploadedImages#uploadedImages
+		= f.simple_fields_for :items do |item|
+			= render "item_fields", f: item, types: @types
 	%br/
 	.row
 		.col-xs-12
@@ -15,7 +17,7 @@
 	  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
 	  for (var i = 0; i < 5; i++)
-	    text += possible.charAt(Math.floor(Math.random() * possible.length));
+		text += possible.charAt(Math.floor(Math.random() * possible.length));
 
 	  return text;
 	}
@@ -83,7 +85,8 @@
 					} else {
 						name = "";
 					}
-					var options = gon.types;
+					var options = #{@types.to_json.html_safe}
+					// var options = gon.types;
 					var selectOptions = '';
 					for (var i = 0; i < options.length; i++) {
 						var newOption = '<option value="'+options[i]+'">'+options[i]+'</option>'
@@ -105,11 +108,13 @@
 					'</div>';
 					var valueInput =
 					'<div class="itemInput pull-right valueInput">'+
-						'<label>Estimated Value:</label>' +
+						'<label>Consigment price:</label>' +
 						'<input class="form-control" type="text" name="consignment[items_attributes][][value]">' +
 					'</div>';
-
+					console.log($(".dashboardModified").val())
 					if("#{controller.action_name}" === "admin") {
+						valueInput = valueInput
+					} else if ($(".dashboardModified").val() === "true"){
 						valueInput = valueInput
 					} else {
 						valueInput = "";
@@ -126,7 +131,7 @@
 									'</div>' +
 									'<div class="col-xs-9 col-lg-10">' +
 										'<div class="description">' +
-											'<label> Item Description</label>'+
+											'<label> Description, brand, measurements, approximate purchase price, etc</label>'+
 											'<textarea class="form-control" rows="2" name="consignment[items_attributes][][description]"></textarea>' +
 											'<br>' +
 											typeSelect +

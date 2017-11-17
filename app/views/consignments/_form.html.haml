@@ -1,12 +1,41 @@
 .consignmentForm
   = simple_form_for @consignment, html: {class: "directUpload"},  data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } do |f|
+    .consignmentNumber.hidden
+      = f.input :consigner_number, label: "Consigner #", wrapper_html: {class: "col-xs-12"}
+    = f.input :admin_created, :as => :hidden, value: false, input_html: {class: "adminCreated"}
+    = f.input :dashboard_modified, :as => :hidden, value: false, input_html: {class: "dashboardModified"}
     = f.input :first_name, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-6"}, label: "First Name", placeholder: "Jane"
     = f.input :last_name, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-6"}, label: "Last Name", placeholder: "Smith"
     = f.input :email, wrapper_html: {class: "col-xs-12 col-lg-6"}, placeholder: "janesmith@example.com"
-    = f.input :phone, input_html: { class: 'phoneInput' }, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-6"}, placeholder: "555-555-5555"
+    = f.input :phone, label: "Mobile Phone", input_html: { class: 'phoneInput' }, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-3"}, placeholder: "555-555-5555"
+
+    = f.input :home_phone, input_html: { class: 'phoneInput' }, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-3"}, placeholder: "555-555-5555"
+    .col-lg-6.col-xs-12.mailingAddressBox
+      .panel.panel-primary
+        .panel-body
+          %p.pull-left Mailing Address
+          = f.input :address_1_mailing, label: "Address 1", input_html: { class: 'mailingInput' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-12"}, placeholder: "123 Avery Lane"
+          = f.input :address_2_mailing, label: "Address 2", input_html: { class: 'mailingInput' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-12"}, placeholder: "Suite 20"
+          = f.input :city_mailing, label: "City", input_html: { class: 'mailingInput' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-12"}, placeholder: "Scottsdale"
+          = f.input :state_mailing, label: "State", input_html: { class: 'mailingInput' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-4"}, placeholder: "AZ"
+          = f.input :zip_mailing, label: "ZIP", input_html: { class: 'mailingInput' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-8"}, placeholder: "85205"
+
+
     = f.input :date_available, :as => :date_picker, wrapper_html: {class: "col-xs-12 col-sm-6 col-md-6"}, label: "What date will item(s) be available?"
     = f.input :date_available, :as => :hidden, input_html: {class: "hiddenDateInput"}
     = f.input :need_pickup, as: :radio_buttons, wrapper_html: {class: "col-xs-12 col-md-6"}, label: "Do these items need to be picked up?"
+    .col-lg-6.col-xs-12.pickupAddressBox
+      .panel.panel-primary
+        .panel-body
+          %p.pull-left Pickup Location
+          .checkbox.pull-right
+            %label.pull-right
+              %input.sameAsMailing{type: "checkbox"} &nbsp; Same as Mailing Address
+          = f.input :address_1_pickup, label: "Address 1", input_html: { class: '' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-12"}, placeholder: "123 Avery Lane"
+          = f.input :address_2_pickup, label: "Address 2", input_html: { class: '' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-12"}, placeholder: "Suite 20"
+          = f.input :city_pickup, label: "City", input_html: { class: '' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-12"}, placeholder: "Scottsdale"
+          = f.input :state_pickup, label: "State", input_html: { class: '' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-4"}, placeholder: "AZ"
+          = f.input :zip_pickup, label: "ZIP", input_html: { class: '' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-8"}, placeholder: "85205"
 
     .row
       .col-xs-12
@@ -18,7 +47,12 @@
         %br/
         = f.submit "Submit Items", class: "btn squareBtn submitBtn"
 
+  -if controller.action_name === "admin"
+    :javascript
+      $(".adminCreated").val(true);
+
   :javascript
+
     $(".phoneInput").mask("999-999-9999")
     $('.datetimepicker').datetimepicker({
       minDate: "#{Date.today}",
@@ -30,4 +64,50 @@
     $(".datetimepicker input").click(function(){
       $(".input-group-btn .btn").click();
       console.log("test");
+    })
+    //
+    // if($("consignment[need_pickup]").val() === true){
+    //   console.log(true);
+    // }
+    $(".pickupAddressBox").hide();
+    $("input:radio[name='consignment[need_pickup]']").change(function(){
+      var value = $(this).val();
+      $(".pickupAddressBox").toggle();
+      console.log(value);
+      // if(value === true) {
+      //   $(".pickupAddressBox").toggle();
+      // }
+    })
+
+    $(".mailingInput").on('change keyup keydown keypress', function(){
+      if($(".sameAsMailing").prop( "checked") === true) {
+        $(".pickupAddressBox #consignment_address_1_pickup").val($(".mailingAddressBox #consignment_address_1_mailing").val());
+        $(".pickupAddressBox #consignment_address_2_pickup").val($(".mailingAddressBox #consignment_address_2_mailing").val());
+        $(".pickupAddressBox #consignment_city_pickup").val($(".mailingAddressBox #consignment_city_mailing").val());
+        $(".pickupAddressBox #consignment_state_pickup").val($(".mailingAddressBox #consignment_state_mailing").val());
+        $(".pickupAddressBox #consignment_zip_pickup").val($(".mailingAddressBox #consignment_zip_mailing").val());
+      }
+    })
+
+    $(".sameAsMailing").change(function(){
+      // var address1 = $(".mailingAddressBox #consignment_address_1_mailing")
+      // var address2 = $(".mailingAddressBox #consignment_address_2_mailing")
+      // var city = $(".mailingAddressBox #consignment_city_mailing")
+      // var state = $(".mailingAddressBox #consignment_state_mailing")
+      // var zip = $(".mailingAddressBox #consignment_zip_mailing")
+
+      if($(".sameAsMailing").prop( "checked") === true) {
+        $(".pickupAddressBox #consignment_address_1_pickup").val($(".mailingAddressBox #consignment_address_1_mailing").val());
+        $(".pickupAddressBox #consignment_address_2_pickup").val($(".mailingAddressBox #consignment_address_2_mailing").val());
+        $(".pickupAddressBox #consignment_city_pickup").val($(".mailingAddressBox #consignment_city_mailing").val());
+        $(".pickupAddressBox #consignment_state_pickup").val($(".mailingAddressBox #consignment_state_mailing").val());
+        $(".pickupAddressBox #consignment_zip_pickup").val($(".mailingAddressBox #consignment_zip_mailing").val());
+      } else {
+          $(".pickupAddressBox #consignment_address_1_pickup").val("");
+          $(".pickupAddressBox #consignment_address_2_pickup").val("");
+          $(".pickupAddressBox #consignment_city_pickup").val("");
+          $(".pickupAddressBox #consignment_state_pickup").val("");
+          $(".pickupAddressBox #consignment_zip_pickup").val("");
+      }
+
     })

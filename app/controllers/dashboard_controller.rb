@@ -1,5 +1,6 @@
 class DashboardController < ApplicationController
   def index
-    render
+    # render
+    @consignments = Consignment.all
   end
 end

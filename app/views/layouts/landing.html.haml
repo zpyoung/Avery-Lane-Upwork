@@ -31,8 +31,12 @@
         #landingNavbar.collapse.navbar-collapse
           %ul.nav.navbar-nav.navbar-right
             - if controller.action_name === "show"
-              %li
-                = link_to "Submit More Items", new_consignment_path, class: "btn btn-primary btnSquare"
+              - if params[:admin]
+                %li
+                  = link_to "Submit More Items", admin_path, class: "btn btn-primary btnSquare"
+              - else
+                %li
+                  = link_to "Submit More Items", new_consignment_path, class: "btn btn-primary btnSquare"
             %li
               = link_to "Home", "https://www.averylanehome.com", class: "btn btnSquare"
 

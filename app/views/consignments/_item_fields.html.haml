@@ -1,13 +1,37 @@
 .nested-fields
-  .row
-    .col-xs-5.col-lg-2
-      %img{src: "http://via.placeholder.com/100x100", class: "img-responsive"}
-    .col-xs-6.col-lg-9
-      = f.input :description
-    .col-xs-1.col-lg-1
-      = link_to_remove_association "Remove Item", f
-    .col-xs-12
-      = f.input :type
-  .row
-    .col-xs-12
-      = link_to_remove_association "Remove Item", f
+	.row.itemRow.imageId
+		.col-xs-12
+			.panel.panel-default.gridImagePanel
+				.panel-body
+					.col-xs-3.col-lg-2
+						.gridImageBox
+							%img.img-responsive.thumbnailImg{:alt => "item image", :src => ""}
+					.col-xs-9.col-lg-10
+						.row
+							.col-xs-12
+								.description
+									= f.input :description, label: "Description, brand, measurements, approximate purchase price, etc"
+									%br/
+						.row
+							.col-xs-12.col-lg-6
+								.itemInput
+									.form-group
+										= f.input :item_type, collection: @types, prompt: "Select One"
+							.col-xs-6.col-lg-6
+								.itemInput
+									= f.input :price, label: "Consigment price:"
+							.col-xs-6.col-lg-6
+								.itemInput
+									= f.input :item_status, as: :select, collection: [["Accepting",true],["Not Accepting", false]], prompt: "Select One", label: "Consigment Status:"
+
+				.panel-footer.text-right
+					-# %a{:onclick => "deleteGridItem(\\imageId\\)"}
+					-# 	%i.fa.fa-trash-o
+					= f.input :image, as: :hidden, input_html: {class: "imgInput"}
+
+:javascript
+	$(".imgInput").each(function(){
+		var imageUrl = $(this).val();
+		var parent = $(this).closest(".panel")
+		$(parent).find("img.thumbnailImg").prop('src', imageUrl)
+	})

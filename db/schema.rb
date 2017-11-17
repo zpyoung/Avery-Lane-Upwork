@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171101185218) do
+ActiveRecord::Schema.define(version: 20171116171852) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,8 +22,26 @@ ActiveRecord::Schema.define(version: 20171101185218) do
     t.string   "phone"
     t.datetime "date_available"
     t.boolean  "need_pickup"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.string   "address_1_pickup"
+    t.string   "address_2_pickup"
+    t.string   "city_pickup"
+    t.string   "state_pickup"
+    t.string   "zip_pickup"
+    t.string   "address_1_mailing"
+    t.string   "address_2_mailing"
+    t.string   "city_mailing"
+    t.string   "state_mailing"
+    t.string   "zip_mailing"
+    t.string   "home_phone"
+    t.string   "consigner_number"
+    t.decimal  "consignment_price"
+    t.text     "contract"
+    t.text     "contract_additional_item"
+    t.integer  "status",                   default: 0
+    t.boolean  "admin_created",            default: false
+    t.boolean  "dashboard_modified",       default: false
   end
 
   create_table "items", force: :cascade do |t|
@@ -31,12 +49,15 @@ ActiveRecord::Schema.define(version: 20171101185218) do
     t.string   "image"
     t.text     "description"
     t.string   "type"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.string   "item_type"
     t.decimal  "value"
     t.decimal  "price"
     t.decimal  "cost"
+    t.integer  "item_status",    default: 0
+    t.decimal  "item_price"
+    t.string   "item_number"
     t.index ["consignment_id"], name: "index_items_on_consignment_id", using: :btree
   end
 

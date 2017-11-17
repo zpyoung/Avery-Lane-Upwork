@@ -15,5 +15,8 @@ Rails.application.routes.draw do
     resources list_items, except: :show
   end
 
+  post 'duplicate_consignment', to: 'consignments#duplicate_consignment', as: :duplicate_consignment
+
+
   root "dashboard#index"
 end

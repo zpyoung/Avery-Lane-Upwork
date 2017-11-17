@@ -22,6 +22,9 @@
 //= require confirm_modal
 //= require moment
 //= require bootstrap-datetimepicker
+//= require dataTables/jquery.dataTables
+//= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
+//= require dataTables/jquery.dataTables
 //= require select2
 //= require cocoon
 //= require turbolinks

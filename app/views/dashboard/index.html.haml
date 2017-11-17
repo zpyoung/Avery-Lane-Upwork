@@ -1,1 +1,6 @@
 - page_title "Dashboard"
+
+- content_for :action_button do
+  = link_to "Create Consignment", new_consignment_path, class: "btn btn-primary", remote: true
+
+= render partial: "consignments", locals: {consignments: @consignments}

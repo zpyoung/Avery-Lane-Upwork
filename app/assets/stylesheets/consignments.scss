@@ -1,3 +1,62 @@
 // Place all the styles related to the consignments controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.modal-backdrop.in {
+    display: none;
+}
+table.dataTable thead th {
+    position: relative;
+    background-image: none !important;
+}
+
+table.dataTable thead th.sorting:after,
+table.dataTable thead th.sorting_asc:after,
+table.dataTable thead th.sorting_desc:after {
+    position: absolute;
+    top: 15px;
+    right: 8px;
+    display: block;
+    font-family: 'FontAwesome';
+    left: auto;
+    opacity: 50%
+}
+table.dataTable thead th.sorting:after {
+    content: "\f0dc";
+    color: #ddd;
+    font-size: 0.8em;
+    padding-top: 0.12em;
+}
+table.dataTable thead th.sorting_asc:after {
+    content: "\f0de";
+}
+table.dataTable thead th.sorting_desc:after {
+    content: "\f0dd";
+}
+div.dataTables_info {
+    font-size: 13px;
+}
+div.dataTables_filter input {
+    height: 35px;
+    width: 200px !important;
+}
+.dataTables_length {
+    float: left;
+    margin-top: 25px;
+    .select2-container {
+        max-width: 100px;
+    }
+}
+.dataTables_paginate {
+    margin-top: 25px !important;
+}
+#consignment_modal {
+    .modal-header {
+        margin: 8px 0;
+        h3 {
+            font-size: 20px;
+        }
+    }
+    .modal-body {
+        padding: 10px;
+    }
+}

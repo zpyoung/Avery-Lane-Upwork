@@ -83,7 +83,7 @@
     }
   }
   .checkbox {
-    margin-top: 25px;
+    margin-top: 0px;
   }
 }
 
@@ -103,10 +103,10 @@
             display: none;
         }
     }
-    .itemInput {
-      width: 48%;
-
-    }
+    // .itemInput {
+    //   width: 48%;
+    //
+    // }
     @media(max-width: 768px) {
       .itemInput {
         width: 100%;

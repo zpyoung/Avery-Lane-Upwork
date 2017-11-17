@@ -39,6 +39,7 @@ gem 'rename'
 gem 'figaro'
 gem 'maskedinput-rails'
 gem 'gon'
+gem 'jquery-datatables-rails', '~> 3.4.0'
 
 group :development, :test do
   gem 'byebug', platform: :mri
