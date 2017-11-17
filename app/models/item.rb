@@ -8,6 +8,6 @@ class Item < ApplicationRecord
     private
 
     def set_status
-        self.status ||= :not_accepting
+        self.item_status ||= :not_accepting
     end
 end
