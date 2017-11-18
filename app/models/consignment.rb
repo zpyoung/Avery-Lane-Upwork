@@ -17,4 +17,6 @@ class Consignment < ApplicationRecord
     validates :state_mailing, presence: true
     validates :zip_mailing, presence: true
 
+
+
 end

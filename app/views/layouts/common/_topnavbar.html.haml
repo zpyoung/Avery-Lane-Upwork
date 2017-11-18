@@ -1,5 +1,13 @@
 %header.topnavbar-wrapper
   %nav.navbar.topnavbar{ role: "navigation" }
+    .row.flashMessageTray{style: "display: none;"}
+      - flash.each do |key, value|
+        %div{:class => "alert alert-#{key} alert-dismissable"}
+          %a.close{"aria-label" => "close", "data-dismiss" => "alert", :href => "#"} ×
+          %raw.strong#notice= value.html_safe
+      :javascript
+        setTimeout("$('.flashMessageTray').slideDown(\"slow\")", 100)
+        setTimeout("$('.alert-notice').slideUp('slow')", 4000)
     .navbar-header
       = link_to root_path, class: "navbar-brand" do
         .brand-logo

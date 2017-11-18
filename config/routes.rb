@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   end
 
   post 'duplicate_consignment', to: 'consignments#duplicate_consignment', as: :duplicate_consignment
-
+  post 'change_status', to: 'consignments#change_status', as: :change_status
 
   root "dashboard#index"
 end

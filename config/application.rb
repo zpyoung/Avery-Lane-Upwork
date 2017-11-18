@@ -27,5 +27,7 @@ module Averylane
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
     config.app_name = "Avery Lane"
+
+    config.trello_approved_list_id = ENV["TRELLO_APPROVED_LIST_ID"]
   end
 end
