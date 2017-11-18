@@ -8,6 +8,7 @@
                             %thead
                                 %tr
                                     %th Date
+                                    %th Status
                                     %th Consigner Number
                                     %th Consigner Name
                                     %th # of Items
@@ -16,6 +17,18 @@
                                 - @consignments.each do |c|
                                     %tr
                                         %td= c.updated_at.strftime("%D - %I:%M%p")
+                                        %td
+                                            -if c.status === "new_consignment"
+                                                %span.label.label-info New
+                                            -elsif c.status === "approved"
+                                                %span.label.label-success Approved
+                                            -elsif c.status === "partially_approved"
+                                                %span.label.label-warning Partially Approved
+                                            -elsif c.status === "rejected"
+                                                %span.label.label-danger Rejected
+                                            -else
+                                                %span.label.label-info New
+
                                         %td &num;#{c.consigner_number}
                                         %td #{c.first_name} #{c.last_name}
                                         %td= c.items.count
@@ -45,6 +58,7 @@
         "bInfo": false,
         "bAutoWidth": false,
         "aoColumns": [
+        	null,
         	null,
         	null,
         	null,

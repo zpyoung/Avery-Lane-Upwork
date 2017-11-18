@@ -1,6 +1,9 @@
 class Consignment < ApplicationRecord
     has_many :items, inverse_of: :consignment
     accepts_nested_attributes_for :items, reject_if: :all_blank, allow_destroy: true
+    after_initialize :set_status , :if => :new_record?
+
+    enum status: [:new_consignment, :approved, :partially_approved, :rejected]
 
     validates :first_name, presence: true
     validates :last_name, presence: true
@@ -17,6 +20,11 @@ class Consignment < ApplicationRecord
     validates :state_mailing, presence: true
     validates :zip_mailing, presence: true
 
+    private
+
+    def set_status
+        self.status ||= :new_consignment
+    end
 
 
 end

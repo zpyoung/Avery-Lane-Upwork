@@ -22,7 +22,7 @@
 									= f.input :price, label: "Consigment price:"
 							.col-xs-6.col-lg-6
 								.itemInput
-									= f.input :item_status, as: :select, collection: [["Accepting",true],["Not Accepting", false]], prompt: "Select One", label: "Consigment Status:"
+									= f.input :item_status, as: :select, collection: [["Accepting",:accepting],["Not Accepting", :not_accepting]], prompt: "Select One", label: "Consigment Status:"
 
 				.panel-footer.text-right
 					-# %a{:onclick => "deleteGridItem(\\imageId\\)"}

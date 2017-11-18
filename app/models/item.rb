@@ -3,7 +3,7 @@ class Item < ApplicationRecord
 
     after_initialize :set_status , :if => :new_record?
 
-    enum status: [:accepting, :not_accepting]
+    enum item_status: [:accepting, :not_accepting]
 
     private
 

@@ -3,6 +3,7 @@ $.rails.allowAction = (element) ->
   return true unless message
   $link = element.clone()
   $link.removeAttr("class").removeAttr("data-confirm").addClass("btn").addClass("btn-danger").html("Confirm")
+  $link.attr("data-disable-with", "Please Wait...")
   $modal_html = $("#confirm-modal")
   $modal_html.find("span#confirm-modal-link").html($link)
   $modal_html.find(".modal-body").text(message)
