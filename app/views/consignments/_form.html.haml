@@ -1,8 +1,12 @@
 .consignmentForm
   = simple_form_for @consignment, html: {class: "directUpload"},  data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } do |f|
     .consignmentNumber.hidden
-      = f.input :consigner_number, label: "Consigner #", wrapper_html: {class: "col-xs-6"}
-      = f.input :status, as: :select, collection: [["New",:new],["Approved", :approved],["Partially Approved", :partially_approved],["Rejected", :rejected]], prompt: "Select One", label: "Consigment Status:",wrapper_html: {class: "col-xs-6"}
+
+      - if controller.action_name === "edit"
+        = f.input :consigner_number, label: "Consigner #", wrapper_html: {class: "col-xs-6"}
+        = f.input :status, as: :select, collection: [["New", :new_consignment],["Approved", :approved],["Partially Approved", :partially_approved],["Rejected", :rejected]], prompt: "Select One", label: "Consigment Status:",wrapper_html: {class: "col-xs-6"}
+      - else
+        = f.input :consigner_number, label: "Consigner #", wrapper_html: {class: "col-xs-12"}
     = f.input :admin_created, :as => :hidden, value: false, input_html: {class: "adminCreated"}
     = f.input :dashboard_modified, :as => :hidden, value: false, input_html: {class: "dashboardModified"}
     = f.input :first_name, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-6"}, label: "First Name", placeholder: "Jane", input_html: {class: "checkValid"}
@@ -37,19 +41,35 @@
           = f.input :state_pickup, label: "State", input_html: { class: '' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-4"}, placeholder: "AZ"
           = f.input :zip_pickup, label: "ZIP", input_html: { class: '' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-8"}, placeholder: "85205"
 
+
     .row
       .col-xs-12
         %h3 Items
         #items
-          = render partial: "image_upload", locals: {s3_direct_post: @s3_direct_post, :f => f}
+          .col-xs-12.imageBox
+            .row.uploadedImages#uploadedImages
+              = f.simple_fields_for :items do |item|
+                = render "items/item_fields", f: item, types: @types
+              %br/
+            - if controller.action_name === "edit"
+              .row
+                = link_to "Add Items", new_consignment_item_path(consignment_id: @consignment.id), class: "btn btn-primary pull-right", remote: true
+            - else
+              = render partial: "image_upload", locals: {s3_direct_post: @s3_direct_post, :f => f}
     .row
       .col-xs-12
         %br/
-        = f.submit "Submit Items", class: "btn squareBtn submitBtn", data: {"disable-with"=>"Saving"}
-
+        - if controller.action_name === "edit"
+          = f.submit "Save", class: "btn squareBtn submitBtn", data: {"disable-with"=>"Saving"}
+        - else
+          = f.submit "Submit Items", class: "btn squareBtn submitBtn", data: {"disable-with"=>"Saving"}
+  #items_modal.modal.fade
   -if controller.action_name === "admin"
     :javascript
       $(".adminCreated").val(true);
+  -if controller.action_name === "edit"
+    :javascript
+      $(".consignmentNumber").removeClass("hidden");
 
   :javascript
     // $(".consignmentForm .required").on("keyup keypress", validateFields())

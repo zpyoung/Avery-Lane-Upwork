@@ -1,0 +1,8 @@
+.container
+    .pageTitle
+        %h2 Avery Lane Consignment Contract
+    .row
+        .col-xs-12
+            .panel
+                .panel-body
+                    = render partial: "consignments/form", locals: {consignment: @consignment, contract: @contract}

@@ -1,0 +1,6 @@
+.modal-dialog.modal-lg
+    .modal-content
+        .modal-header
+            %h3 Add More Items
+        .modal-body
+            = render partial: "items_form", locals: {types: @types, consignment: @consignment, item: @item}

@@ -1,9 +1,12 @@
-.row
-	.col-xs-12
-		%span.btn.fileInput-dropzone
-			%p.fileInput-link.visible-lg.visible-md Drag image(s) or click here to add items
-			%p.fileInput-link.visible-xs.visible-sm Click here to add items
-			= f.file_field :images, :multiple => true
+.col-xs-12.imageBox
+	.row.uploadedImages.uploadedImages2#uploadedImages
+	%br/
+	.row
+		.col-xs-12
+			%span.btn.fileInput-dropzone
+				%p.fileInput-link.visible-lg.visible-md Drag image(s) or click here to add items
+				%p.fileInput-link.visible-xs.visible-sm Click here to add items
+				= f.file_field :images, :multiple => true
 
 :javascript
 	// Creates random 5 character id
@@ -88,14 +91,14 @@
 						selectOptions = selectOptions + " " + newOption;
 					}
 
-					var input = '<input type="hidden" name="consignment[items_attributes][][image]" value="'+url+'" class="'+imageId+'">'
+					var input = '<input type="hidden" name="item_image[]" value="'+url+'" class="'+imageId+'">'
 					// form.append(input);
 
 					var typeSelect =
 					'<div class="itemInput pull-left">'+
 						'<div class="form-group">'+
 							'<label>What type of item is this:</label>'+
-							'<select name="consignment[items_attributes][][item_type]" class="form-control customSelectBox">'+
+							'<select name="item_item_type[]" class="form-control customSelectBox">'+
 								'<option value="" selected disabled>Select One</option>'+
 								selectOptions +
 							'</select>'+
@@ -104,7 +107,7 @@
 					var valueInput =
 					'<div class="itemInput pull-right valueInput">'+
 						'<label>Consigment price:</label>' +
-						'<input class="form-control" data-autonumeric="true" type="text" name="consignment[items_attributes][][price]">' +
+						'<input class="form-control" data-autonumeric="true" type="text" name="item_price[]">' +
 					'</div>';
 					console.log($(".dashboardModified").val())
 					if("#{controller.action_name}" === "admin") {
@@ -127,7 +130,7 @@
 									'<div class="col-xs-9 col-lg-10">' +
 										'<div class="description">' +
 											'<label> Description, brand, measurements, approximate purchase price, etc</label>'+
-											'<textarea class="form-control" rows="2" name="consignment[items_attributes][][description]"></textarea>' +
+											'<textarea class="form-control" rows="2" name="item_description[]"></textarea>' +
 											'<br>' +
 											typeSelect +
 											valueInput +
@@ -144,7 +147,7 @@
 						'</div>' +
 					'</div>';
 
-					$(".uploadedImages").append(imageGridItem);
+					$(".uploadedImages2").append(imageGridItem);
 				},
 				fail: function(e, data) {
 					submitButton.prop('disabled', false);

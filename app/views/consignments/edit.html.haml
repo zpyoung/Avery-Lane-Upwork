@@ -1,0 +1,25 @@
+- page_title "Avery Lane Consignment ##{@consignment.consigner_number}"
+.container
+    .row
+        .col-xs-12
+            .panel.panel-default
+                .panel-body
+                    %ul.nav.nav-tabs
+                        %li.active
+                            %a{data: {toggle: "tab"}, href: "#consignmentTab"} Consignment Details
+                        %li
+                            %a{data: {toggle: "tab"}, href: "#contractTab"} Contract
+
+                    .tab-content
+                        .tab-pane.fade#consignmentTab.active.in
+                            = render partial: "consignments/form", locals: {consignment: @consignment, contract: @contract}
+                        .tab-pane.fade#contractTab
+                            = render partial: "contracts/form", locals: {consignment: @consignment, contract: @contract}
+                .panel-footer
+                    = link_to "Generate Contract", consignment_contract_path(@consignment, @contract, format: "pdf"), target: "_blank"
+
+:javascript
+    // $(document).ready(function(){
+    //     $("#consignmentTab").show();
+    //     $("#contractTab").hide();
+    // });

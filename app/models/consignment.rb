@@ -1,5 +1,6 @@
 class Consignment < ApplicationRecord
     has_many :items, inverse_of: :consignment
+    has_many :contracts, inverse_of: :consignment
     accepts_nested_attributes_for :items, reject_if: :all_blank, allow_destroy: true
     after_initialize :set_status , :if => :new_record?
 

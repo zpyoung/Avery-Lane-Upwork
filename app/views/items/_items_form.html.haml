@@ -1,0 +1,10 @@
+.consignmentForm
+  = simple_form_for [@consignment, @item], html: {class: "directUpload"},  data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } do |f|
+    .row
+      .col-xs-12
+        #items
+          = render partial: "image_upload", locals: {s3_direct_post: @s3_direct_post, :f => f}
+    .row
+      .col-xs-12
+        %br/
+        = f.submit "Save Items", class: "btn squareBtn submitBtn", data: {"disable-with"=>"Saving"}

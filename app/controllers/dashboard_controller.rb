@@ -2,7 +2,7 @@ require 'trello'
 class DashboardController < ApplicationController
   def index
     # render
-    @consignments = Consignment.all
+    @consignments = Consignment.all.includes(:items)
 
     # @data = get_trello_data
   end

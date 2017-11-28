@@ -1,0 +1,31 @@
+.contractForm
+  = simple_form_for [@consignment, @contract] do |f|
+    = f.input :intro, wrapper_html: {class: "col-xs-12"}, input_html: {rows: 4}
+    .form-group.col-xs-12.termsShell
+      %label Terms and Conditions
+      - @contract.terms_and_conditions_list.each_with_index do |c, index|
+        .textareaBox
+          %textarea#setting_terms_and_conditions_list.form-control.text.optional.termsInput{:multiple => "multiple", :name => "setting[terms_and_conditions_list][]", :rows => "2", :style => "margin-bottom:5px;"} #{c}
+          %a{class: "removeItem", style: "position: absolute;right: 25px;margin-top: -40px;", onclick: "removeItem(this)"}
+            %i.fa.fa-trash-o
+      %a{ class: "addAnotherBtn", onclick: "addAnother()", remote: true, style: "cursor: pointer;"} Add Another
+    = f.input :systematic_price_reductions, wrapper_html: {class: "col-xs-12"}, input_html: {rows: 4}
+    = f.input :optional_extension, wrapper_html: {class: "col-xs-12"}, input_html: {rows: 4}
+    = f.input :end_of_agreement, wrapper_html: {class: "col-xs-12"}, input_html: {rows: 9}
+    = f.input :note, wrapper_html: {class: "col-xs-12"}, input_html: {rows: 4}
+    = f.input :payment_to_consignor, wrapper_html: {class: "col-xs-12"}, input_html: {rows: 2}
+    = f.input :insurance, wrapper_html: {class: "col-xs-12"}, input_html: {rows: 2}
+    = f.input :additional_notes, wrapper_html: {class: "col-xs-12"}, input_html: {rows: 2}
+    .col-xs-12.text-center
+    %br/
+    = f.submit "Save", class: "btn btn-primary btn-lg squareBtn submitBtn", data: {"disable-with"=>"Saving"}
+
+:javascript
+  function removeItem(item) {
+    $(item).closest('.textareaBox').remove();
+  }
+
+  function addAnother() {
+    var element = $(".textareaBox:first").clone().appendTo(".textareaBox:last")
+    $(element).find(".termsInput").val("");
+  }

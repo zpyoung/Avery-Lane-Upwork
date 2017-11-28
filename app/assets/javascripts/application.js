@@ -29,6 +29,7 @@
 //= require select2
 //= require cocoon
 //= require turbolinks
+//= require autonumeric
 
 //= require jquery.storageapi
 //= require maskedinput

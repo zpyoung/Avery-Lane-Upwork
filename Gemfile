@@ -41,6 +41,9 @@ gem 'maskedinput-rails'
 gem 'gon'
 gem 'jquery-datatables-rails', '~> 3.4.0'
 gem "ruby-trello"
+gem 'pdfkit'
+gem 'wkhtmltopdf-binary'
+gem 'autonumeric-rails'
 
 group :development, :test do
   gem 'byebug', platform: :mri

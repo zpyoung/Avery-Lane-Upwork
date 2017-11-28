@@ -1,0 +1,157 @@
+!!!
+%html{ lang: "en"}
+    %head
+        %meta{ charset: "utf-8" }
+        %meta{ content: "IE=edge", "http-equiv" => "X-UA-Compatible" }
+        %meta{ content: "width=device-width, initial-scale=1, maximum-scale=1", name: "viewport" }
+        %meta{ name: "turbolinks-cache-control", content: "no-cache" }
+        -# %meta{:name => 'pdfkit-header_html', :content => pdf_header_url }
+        %meta{:name => 'pdfkit-header_spacing', :content => '0' }
+        %meta{:name => 'pdfkit-margin_top', :content => '12mm' }
+        %meta{:name => 'pdfkit-margin_bottom', :content => '10mm' }
+        %meta{:name => 'pdfkit-margin_left', :content => '10mm' }
+        %meta{:name => 'pdfkit-margin_right', :content => '10mm' }
+        %meta{:name => 'pdfkit-header_right', :content => 'AVERY [page] of [topage]' }
+        %meta{:name => 'pdfkit-footer_center', :content => '[page]'}
+        %title= page_title_content
+        -# = Gon::Base.render_data
+        -# = stylesheet_link_tag "application", media: "all", 'data-turbolinks-track': 'reload'
+        -# = javascript_include_tag "application", 'data-turbolinks-track': 'reload'
+        = csrf_meta_tags
+        = yield(:head)
+    -# %p{style: "position: absolute; right: 0; top: -15px text-align: left; font-size: 13px;"} AVERY
+    %p{style: "position: absolute; right: 0; top: -15px text-align: left; font-size: 13px;"} #{@consignment.consigner_number}
+    .container.pdf_contract
+        .row
+            .col-xs-12
+                .image_header{style: "margin: 0 auto; text-align: center;"}
+                    = image_tag(image_url("averylane-logo.png"), alt: "Averylane Asset", style: "margin: 0 auto;")
+                    %h3{style: "font-size: 18px; color: #9CB04D; margin-top: -4px"} AVERY LANE CONSIGNMENT AGREEMENT
+
+    .row
+        .col-xs-12
+            %p
+                %strong CONSIGNMENT VENDOR:
+                Avery Lane Fine Consignments (Hereafter "AL Consignment")
+            %p{style: "margin-left: 125px;"} 15613 N. Greenway-Hayden Loop, Suite 102, Scottsdale, AZ 85260
+            %p{style: "margin-left: 125px;"} (480) 991-0700   | Darlene@AveryLaneHome.com
+
+            %p
+                %strong CONSIGNOR:
+                %span #{@consignment.first_name} #{@consignment.last_name} (Hereafter "Consignor")
+            %p{style: "margin-left: 68px;"} #{@consignment.address_1_mailing} #{@consignment.address_2_mailing} #{@consignment.city_mailing}, #{@consignment.state_mailing} #{@consignment.zip_mailing}
+            %p
+                %span{style: "margin-left: 68px;"} #{@consignment.email}
+                %span{style: "margin-left: 20px;"} #{@consignment.phone}
+                %span{style: "margin-left: 20px;"} #{@consignment.home_phone}
+    .row
+        .col-xs-12
+            %p #{@contract.intro}
+            %ul
+                - @contract.terms_and_conditions_list.each do |i|
+                    %li #{i}
+            %p
+                %u Systematic price reductions:
+                #{@contract.systematic_price_reductions}
+            %p
+                %u Optional One-time 30-day Extension of Agreement after initial 90 days:
+                #{@contract.optional_extension}
+            %p
+                %u Non-Extension and/or End of Agreement:
+                #{@contract.end_of_agreement}
+            %p
+                %u Note:
+                #{@contract.note}
+            %p{style: "margin-left:300px;"}
+                %span{style: "padding-right: 50px;"} AL Initials
+                %span Consignor Initials
+            .initial_image{style: "margin-left: 260px;"}
+                = image_tag(image_url("ar_initials.png"), alt: "Averylane", style: "margin: 0 auto;")
+    .row
+        .col-xs-12
+            %p #{@contract.payment_to_consignor}
+            %p #{@contract.insurance}
+    .row
+        .col-xs-12
+            .initial_image{style: "margin-left: 160px; margin-bottom: -30px;"}
+                = image_tag(image_url("ar_sig.png"), alt: "Averylane", style: "margin: 0 auto;")
+            %p{style: "font-size: 15px;"}
+                %strong Avery Lane Fine Consignments:
+                %span{style: "padding-right: 50px;"} Darlene Richert - President
+                %span Consignor's Signature
+    .row
+        .col-xs-12
+            -# %p{style: "position: absolute; right: 0; top: -15px text-align: left; font-size: 13px;"} AVERY
+            %p{style: "position: absolute; right: 0; margin-top: 65px; text-align: left; font-size: 13px;"} #{@consignment.consigner_number}
+            %br/
+            %br/
+            %br/
+            %br/
+            %h4
+                %u The Items we will accept for consignment and prices will be determined upon receipt:
+            %h5
+                %strong ACCEPTED ITEMS:
+            %table.table.itemsTable
+                %thead
+                    %tr
+                        %th{style: "max-width:150px;width:150px;"} Picture
+                        %th Description
+                        %th Price
+                %tbody
+                    - @consignment.items.each do |item|
+                        - if item.accepting?
+                            %tr
+                                %td.text-center{style: "max-width:150px;width:150px;"}
+                                    %img.img-responsive.itemImage{:src => "https://#{item.image}", :alt => "", style: "margin: 0 auto;"}/
+                                %td= item.description
+                                %td #{number_to_currency(item.price)}
+            %br/
+            %h5
+                %strong NOT ACCEPTING AT THIS TIME:
+            %table.table.itemsTable
+                %thead
+                    %tr
+                        %th{style: "max-width:150px;width:150px;"} Picture
+                        %th Description
+                        %th Price
+                %tbody
+                    - @consignment.items.each do |item|
+                        - if item.not_accepting?
+                            %tr
+                                %td.text-center{style: "max-width:150px;width:150px;"}
+                                    %img.img-responsive.itemImage{:src => "#{item.image}", :alt => "", style: "margin: 0 auto;"}/
+                                %td= item.description
+                                %td{style:"text-align: center"}= number_to_currency(item.price)
+    :css
+        html, body {
+            font-family: arial, sans-serif;
+        }
+        p, li {
+            font-weight: normal;
+            font-size: 10px;
+        }
+        .itemsTable {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+        .itemsTable thead {
+          background-color: #9CB04D;
+          font-size: 1.5em;
+        }
+        .itemsTable thead th {
+          color: #000 !important;
+          text-align: center;
+          font-weight: normal;
+        }
+        .itemsTable td, .itemsTable th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+        .itemsTable tr:nth-child(even) {
+          background-color: #F5FAEA;
+        }
+        .itemsTable .itemImage {
+          max-width: 100px;
+        }

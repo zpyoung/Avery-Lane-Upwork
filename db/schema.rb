@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171116171852) do
+ActiveRecord::Schema.define(version: 20171120211456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,28 @@ ActiveRecord::Schema.define(version: 20171116171852) do
     t.boolean  "dashboard_modified",       default: false
   end
 
+  create_table "contracts", force: :cascade do |t|
+    t.integer  "consignment_id"
+    t.integer  "contract_type"
+    t.text     "intro"
+    t.text     "terms_and_conditions"
+    t.text     "systematic_price_reductions"
+    t.text     "optional_extension"
+    t.text     "end_of_agreement"
+    t.text     "note"
+    t.text     "payment_to_consignor"
+    t.text     "insurance"
+    t.text     "additional_notes"
+    t.text     "accepted_items",              default: [],              array: true
+    t.text     "rejected_items",              default: [],              array: true
+    t.datetime "experation_date"
+    t.integer  "contract_status"
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.text     "terms_and_conditions_list",   default: [],              array: true
+    t.index ["consignment_id"], name: "index_contracts_on_consignment_id", using: :btree
+  end
+
   create_table "items", force: :cascade do |t|
     t.integer  "consignment_id"
     t.string   "image"
@@ -59,6 +81,23 @@ ActiveRecord::Schema.define(version: 20171116171852) do
     t.decimal  "item_price"
     t.string   "item_number"
     t.index ["consignment_id"], name: "index_items_on_consignment_id", using: :btree
+  end
+
+  create_table "settings", force: :cascade do |t|
+    t.integer  "contract_type"
+    t.text     "intro"
+    t.text     "terms_and_conditions"
+    t.text     "systematic_price_reductions"
+    t.text     "optional_extension"
+    t.text     "end_of_agreement"
+    t.text     "note"
+    t.text     "payment_to_consignor"
+    t.text     "insurance"
+    t.text     "additional_notes"
+    t.datetime "experation_date"
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.text     "terms_and_conditions_list",   default: [],              array: true
   end
 
   create_table "users", force: :cascade do |t|

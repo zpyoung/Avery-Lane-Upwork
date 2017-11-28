@@ -25,6 +25,7 @@
             %ul.dropdown-menu.animated.fadeIn
               - if can? :manage, User
                 %li= link_to "Users", users_path
+              %li= link_to "Settings", edit_setting_path(1)
 
         %li
           = link_to current_user, edit_profile_path, data: { toggle: "ajax-modal", title: "Edit Profile" }, class: "inline"

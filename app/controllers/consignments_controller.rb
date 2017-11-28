@@ -8,6 +8,13 @@ class ConsignmentsController < ApplicationController
 
 	def show
 		@consignment = Consignment.find(params[:id])
+		respond_to do |format|
+			format.html
+			format.pdf do
+				render pdf: "file_name",   # Excluding ".pdf" extension.
+					disposition: 'attachment'
+		  	end
+		end
 	end
 
 	def new
@@ -18,6 +25,7 @@ class ConsignmentsController < ApplicationController
 	end
 	def edit
 		@consignment = Consignment.find(params[:id])
+		@contract = @consignment.contracts.first
 		@types = ['Dining or Breakfast', 'Accent Table or Desk', 'Art, Accessories or Other', 'Antiques']
 		gon.types = @types;
 	end
@@ -33,6 +41,7 @@ class ConsignmentsController < ApplicationController
 		@consignment = Consignment.create(consignment_params)
 		respond_to do |format|
 			if @consignment.save
+				generate_contract(@consignment)
 				if @consignment.dashboard_modified
 					format.html{redirect_to root_path, notice: "Consignment created successfully!"}
 				elsif @consignment.admin_created
@@ -47,6 +56,11 @@ class ConsignmentsController < ApplicationController
 				flash[:alert] = '<span class="bolder"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Error!&nbsp; Consignment Items Not Submitted Because: </span><br>' + @consignment.errors.full_messages.join("<br>").html_safe
 			end
 		end
+	end
+
+	def generate_contract(consignment)
+		@default = Setting.first
+		Contract.create(:consignment_id => consignment.id, :contract_type=>"General", :intro=>"#{@default.intro}", :terms_and_conditions_list=> @default.terms_and_conditions_list, :systematic_price_reductions=>"#{@default.systematic_price_reductions}", :optional_extension=>"#{@default.optional_extension}", :end_of_agreement=>"#{@default.end_of_agreement}", :note=>"#{@default.note}", :payment_to_consignor=>"#{@default.payment_to_consignor}", :insurance=>"#{@default.insurance}", :additional_notes=>"#{@default.additional_notes}")
 	end
 
 	def update
@@ -92,6 +106,11 @@ class ConsignmentsController < ApplicationController
 			redirect_to root_path
 		  end
 		end
+	end
+
+	def contract
+		@consignment = Consignment.find(params[:id])
+		@contract = Contract.new
 	end
 
 	def change_status
@@ -183,7 +202,6 @@ class ConsignmentsController < ApplicationController
 		end
 	    rows.join("\xA")
 	end
-
 
 	protected
 
