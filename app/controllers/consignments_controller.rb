@@ -41,6 +41,7 @@ class ConsignmentsController < ApplicationController
 		@consignment = Consignment.create(consignment_params)
 		respond_to do |format|
 			if @consignment.save
+				# binding.pry
 				generate_contract(@consignment)
 				if @consignment.dashboard_modified
 					format.html{redirect_to root_path, notice: "Consignment created successfully!"}
@@ -118,6 +119,7 @@ class ConsignmentsController < ApplicationController
 		sent = send_to_trello(@consignment)
 		respond_to do |format|
 			if sent
+				@consignment.update(status: :approved)
 				format.html { redirect_to root_path, notice: "Success! Consignment has been Approved and sent to Trello!" }
 			else
 				flash[:alert] = "Something wen't wrong! Please try again.."
@@ -137,13 +139,21 @@ class ConsignmentsController < ApplicationController
 		incoming_tasks_checklist = Trello::Checklist::create(name: "Incoming Tasks", card_id: card.id, position: 2)
 		iventory_tasks_checklist = Trello::Checklist::create(name: "Inventory Tasks", card_id: card.id, position: 3)
 
+
+		#Add attachments
+		@consignment_items.each do |item|
+			if item.accepting?
+				card.add_attachment("https:#{item.image}", "#{item.item_type}")
+			end
+		end
+
 		["Scedule Pick-up or Drop-off", "Add Incoming Date"].each do |item|
 			approval_tasks_checklist.add_item(item)
 		end
-		["Items Received in Warehouse", "Tag Items with Consigner &num;'s "].each do |item|
+		["Items Received in Warehouse", "Tag Items with Consigner Number's "].each do |item|
 			incoming_tasks_checklist.add_item(item)
 		end
-		["Inventory All Items", "Update ASSET", "Final Pricing in ASSET", "Create Item &num;'s", "Send HelloSign Contract", "Signed Contract Received"].each do |item|
+		["Inventory All Items", "Update ASSET", "Final Pricing in ASSET", "Create Item Number's", "Send HelloSign Contract", "Signed Contract Received"].each do |item|
 			iventory_tasks_checklist.add_item(item)
 		end
 		if !card.id.blank?
@@ -163,17 +173,9 @@ class ConsignmentsController < ApplicationController
 
 		rows << "**Pickup Address:** "
 		rows << "**Street 1:** #{consignment.address_1_pickup},#{ consignment.address_2_pickup} #{consignment.city_pickup}, #{consignment.state_pickup}, #{consignment.zip_pickup}"
-		# rows << "**Street 2:** #{consignment.address_2_pickup}"
-		# rows << "**City:** #{consignment.city_pickup}"
-		# rows << "**State:** #{consignment.state_pickup}"
-		# rows << "**Zip:** #{consignment.zip_pickup}"
 
 		rows << "**Mailing Address:**"
 		rows << "**Street 1:** #{consignment.address_1_mailing},#{ consignment.address_2_mailing} #{consignment.city_mailing} #{consignment.state_mailing} #{consignment.zip_mailing}"
-		# rows << "**Street 2:** #{consignment.address_2_mailing}"
-		# rows << "**City:** #{consignment.city_mailing}"
-		# rows << "**State:** #{consignment.state_mailing}"
-		# rows << "**Zip:** #{consignment.zip_mailing}"
 
 		rows << "**Email:** #{consignment.email}"
 		rows << "**Cell Phone:** #{consignment.phone}"
@@ -184,7 +186,9 @@ class ConsignmentsController < ApplicationController
 		rows << "============"
 		if consignment_items.any?
 			consignment_items.each do |item|
-				rows << "#{item.item_type} - $#{item.price}"
+				if item.accepting?
+					rows << "#{item.item_type} - $#{item.price}"
+				end
 			end
 		else
 			rows << "No Items Found"
@@ -195,7 +199,9 @@ class ConsignmentsController < ApplicationController
 		rows << "**Items to Pick-up:**"
 		if consignment_items.any?
 			consignment_items.each do |item|
-				rows << "#{item.item_type}"
+				if item.accepting?
+					rows << "#{item.item_type}"
+				end
 			end
 		else
 			rows << "No Items Found"
@@ -204,7 +210,6 @@ class ConsignmentsController < ApplicationController
 	end
 
 	protected
-
 		def consignment_params
 			params.require(:consignment).permit(:first_name, :last_name, :email, :phone, :need_pickup, :date_available, :address_1_pickup, :address_2_pickup, :city_pickup, :state_pickup, :zip_pickup, :address_1_mailing, :address_2_mailing, :city_mailing, :state_mailing, :zip_mailing, :home_phone, :consigner_number, :consignment_price, :contact, :contract_additional_item, :status, :admin_created, :dashboard_modified, items_attributes: [:id, :image, :description, :item_type, :_destroy, :value, :cost, :price, :item_number, :item_status])
 		end

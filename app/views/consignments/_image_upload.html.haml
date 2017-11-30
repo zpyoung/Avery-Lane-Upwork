@@ -88,7 +88,7 @@
 						selectOptions = selectOptions + " " + newOption;
 					}
 
-					var input = '<input type="hidden" name="consignment[items_attributes][][image]" value="'+url+'" class="'+imageId+'">'
+					var input = '<input type="hidden" name="consignment[items_attributes][][image]" value="'+url+'" class="'+imageId+' hiddenImageInput">'
 					// form.append(input);
 
 					var typeSelect =
@@ -104,16 +104,17 @@
 					var valueInput =
 					'<div class="itemInput pull-right valueInput">'+
 						'<label>Consigment price:</label>' +
-						'<input class="form-control" data-autonumeric="true" type="text" name="consignment[items_attributes][][price]">' +
+						'<input class="form-control" type="text" name="consignment[items_attributes][][price]">' +
 					'</div>';
 					console.log($(".dashboardModified").val())
 					if("#{controller.action_name}" === "admin") {
-						valueInput = valueInput
+						console.log("admin Form")
 					} else if ($(".dashboardModified").val() === "true"){
-						valueInput = valueInput
+						console.log("dashboardModified")
 					} else {
 						valueInput = "";
 					}
+					// valueInput = "";
 
 					var imageGridItem = '<div class="row itemRow '+imageId+'">' +
 						'<div class="col-xs-12">' +
@@ -144,7 +145,7 @@
 						'</div>' +
 					'</div>';
 
-					$(".uploadedImages").append(imageGridItem);
+					$("#uploadedImages").append(imageGridItem);
 				},
 				fail: function(e, data) {
 					submitButton.prop('disabled', false);

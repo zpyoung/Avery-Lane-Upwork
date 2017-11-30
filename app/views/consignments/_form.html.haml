@@ -1,7 +1,6 @@
 .consignmentForm
   = simple_form_for @consignment, html: {class: "directUpload"},  data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } do |f|
     .consignmentNumber.hidden
-
       - if controller.action_name === "edit"
         = f.input :consigner_number, label: "Consigner #", wrapper_html: {class: "col-xs-6"}
         = f.input :status, as: :select, collection: [["New", :new_consignment],["Approved", :approved],["Partially Approved", :partially_approved],["Rejected", :rejected]], prompt: "Select One", label: "Consigment Status:",wrapper_html: {class: "col-xs-6"}
@@ -40,8 +39,6 @@
           = f.input :city_pickup, label: "City", input_html: { class: '' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-12"}, placeholder: "Scottsdale"
           = f.input :state_pickup, label: "State", input_html: { class: '' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-4"}, placeholder: "AZ"
           = f.input :zip_pickup, label: "ZIP", input_html: { class: '' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-8"}, placeholder: "85205"
-
-
     .row
       .col-xs-12
         %h3 Items
@@ -51,11 +48,13 @@
               = f.simple_fields_for :items do |item|
                 = render "items/item_fields", f: item, types: @types
               %br/
-            - if controller.action_name === "edit"
-              .row
-                = link_to "Add Items", new_consignment_item_path(consignment_id: @consignment.id), class: "btn btn-primary pull-right", remote: true
-            - else
-              = render partial: "image_upload", locals: {s3_direct_post: @s3_direct_post, :f => f}
+              - if controller.action_name === "edit"
+                .row
+                  = link_to "Add Items", new_consignment_item_path(consignment_id: @consignment.id), class: "btn btn-primary pull-right", remote: true
+              - else
+                = render partial: "image_upload", locals: {s3_direct_post: @s3_direct_post, :f => f}
+
+
     .row
       .col-xs-12
         %br/

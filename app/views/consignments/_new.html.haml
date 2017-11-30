@@ -3,4 +3,4 @@
         .modal-header
             %h3 Add Consignment
         .modal-body
-            = render partial: "form", locals: {types: @types}
+            = render partial: "form", locals: {types: @types, consignment: @consignment}

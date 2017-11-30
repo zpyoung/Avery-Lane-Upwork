@@ -1,5 +1,5 @@
 .col-xs-12.imageBox
-	.row.uploadedImages.uploadedImages2#uploadedImages
+	.row.uploadedImages2#uploadedImages
 	%br/
 	.row
 		.col-xs-12
@@ -107,7 +107,7 @@
 					var valueInput =
 					'<div class="itemInput pull-right valueInput">'+
 						'<label>Consigment price:</label>' +
-						'<input class="form-control" data-autonumeric="true" type="text" name="item_price[]">' +
+						'<input class="form-control" type="text" name="item_price[]">' +
 					'</div>';
 					console.log($(".dashboardModified").val())
 					if("#{controller.action_name}" === "admin") {

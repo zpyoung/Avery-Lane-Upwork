@@ -9,13 +9,15 @@ class ItemsController < ApplicationController
     end
 
     def create
-        # binding.prys
         @consignment = Consignment.find(params[:consignment_id])
-        params[:item_image].each_with_index do |item, index|
-            @item = @consignment.items.create(image: params[:item_image][index], description: params[:item_description][index], item_type: params[:item_item_type][index], price: params[:item_price][index])
+        if params[:item_image]
+            params[:item_image].each_with_index do |item, index|
+                @item = @consignment.items.create(image: params[:item_image][index], description: params[:item_description][index], item_type: params[:item_item_type][index], price: params[:item_price][index])
+            end
+        else
+            @item = @consignment.items.create(item_params)
         end
 
-        # @item = @consignment.items.create(item_params)
         respond_to do |format|
             if @item.save
                 format.html{redirect_to edit_consignment_path(@consignment), notice: "Items Added to Consignment Successfully!"}
@@ -28,7 +30,11 @@ class ItemsController < ApplicationController
     def destroy
         @consignment = Consignment.find(params[:consignment_id])
         @item = @consignment.items.find(params[:id])
-        @item.destroy
+        if @item.destroy
+            format.html{redirect_to edit_consignment_path(@consignment), notice: "Item was deleted successfully!"}
+        else
+            format.html{redirect_to edit_consignment_path(@consignment), alert: "Something went wrong, please try again."}
+        end
     end
 
     protected
