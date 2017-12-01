@@ -10,19 +10,21 @@ class ItemsController < ApplicationController
 
     def create
         @consignment = Consignment.find(params[:consignment_id])
-        if params[:item_image]
+        if params[:item_image] && params[:item_description] && params[:item_item_type]
             params[:item_image].each_with_index do |item, index|
-                @item = @consignment.items.create(image: params[:item_image][index], description: params[:item_description][index], item_type: params[:item_item_type][index], price: params[:item_price][index])
+                @item = @consignment.items.create(image: params[:item_image][index], description: params[:item_description][index], item_type: params[:item_item_type][index])
+                @item.save
             end
+            saved = true
         else
-            @item = @consignment.items.create(item_params)
+            saved = false
         end
 
         respond_to do |format|
-            if @item.save
+            if saved
                 format.html{redirect_to edit_consignment_path(@consignment), notice: "Items Added to Consignment Successfully!"}
             else
-                format.html{redirect_to edit_consignment_path(@consignment), alert: "Something went wrong, please try again."}
+                format.html{redirect_to edit_consignment_path(@consignment), alert: "Something went wrong, please fill out all fields and try again."}
             end
         end
     end
@@ -30,11 +32,16 @@ class ItemsController < ApplicationController
     def destroy
         @consignment = Consignment.find(params[:consignment_id])
         @item = @consignment.items.find(params[:id])
-        if @item.destroy
-            format.html{redirect_to edit_consignment_path(@consignment), notice: "Item was deleted successfully!"}
-        else
-            format.html{redirect_to edit_consignment_path(@consignment), alert: "Something went wrong, please try again."}
+        respond_to do |format|
+            if @item.destroy
+                format.html { redirect_to edit_consignment_path(@consignment), notice: "Item was deleted successfully!"}
+                format.json { head :no_content }
+    			format.js   { render :layout => false }
+            else
+                format.html{redirect_to edit_consignment_path(@consignment), alert: "Something went wrong, please try again."}
+            end
         end
+
     end
 
     protected
