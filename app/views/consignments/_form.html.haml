@@ -59,9 +59,14 @@
       .col-xs-12
         %br/
         - if controller.action_name === "edit"
-          = f.submit "Save", class: "btn squareBtn submitBtn", data: {"disable-with"=>"Saving"}
+          = f.submit "Save", class: "btn squareBtn submitBtn validated hidden", data: {"disable-with"=>"Saving"}
+          %button{class: "btn squareBtn submitBtn invalid", type: "button", data: {toggle: "tooltip"}, title: "Please Complete All Required Fields"} Save
         - else
-          = f.submit "Submit Items", class: "btn squareBtn submitBtn", data: {"disable-with"=>"Saving"}
+          = f.submit "Submit Items", class: "btn squareBtn submitBtn validated hidden", data: {"disable-with"=>"Saving"}
+          %button{class: "btn squareBtn submitBtn invalid", type: "button", data: {toggle: "tooltip"}, title: "Please Complete All Required Fields"} Submit Items
+        %p.pull-right.lead
+          %sup *
+          Required
   #items_modal.modal.fade
   -if controller.action_name === "admin"
     :javascript
@@ -71,14 +76,21 @@
       $(".consignmentNumber").removeClass("hidden");
 
   :javascript
+    $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip();
+    });
     // $(".consignmentForm .required").on("keyup keypress", validateFields())
     $(".consignmentForm .submitBtn").hover(function(){validateFields()})
     function validateFields() {
       var invalids = checkInputs();
       if (invalids > 0 ) {
         $(".consignmentForm .submitBtn").addClass("disabled")
+        $(".consignmentForm .submitBtn.invalid").removeClass("hidden")
+        $(".consignmentForm .submitBtn.validated").addClass("hidden")
       } else {
         $(".consignmentForm .submitBtn").removeClass("disabled")
+        $(".consignmentForm .submitBtn.invalid").addClass("hidden")
+        $(".consignmentForm .submitBtn.validated").removeClass("hidden")
       }
       console.log(invalids)
     }
