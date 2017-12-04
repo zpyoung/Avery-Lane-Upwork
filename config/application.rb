@@ -24,11 +24,13 @@ module Averylane
     config.time_zone = 'Arizona'
     config.active_record.default_timezone = :local
     config.middleware.use "PDFKit::Middleware", :print_media_type => true
+    config.allow_concurrency = true
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
     config.app_name = "Avery Lane"
 
     config.trello_approved_list_id = ENV["TRELLO_APPROVED_LIST_ID"]
+    config.trello_rejected_list_id = ENV["TRELLO_REJECTED_LIST_ID"]
   end
 end

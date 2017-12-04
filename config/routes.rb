@@ -7,6 +7,9 @@ Rails.application.routes.draw do
     end
   end
 
+  require 'sidekiq/web'
+  mount Sidekiq::Web => "/sidekiq"
+
   get "/admin", to: "consignments#admin", as: :admin
   [:teams, :regions, :list_roles].each do |list_items|
     resources list_items, except: :show

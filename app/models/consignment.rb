@@ -4,7 +4,7 @@ class Consignment < ApplicationRecord
     accepts_nested_attributes_for :items, reject_if: :all_blank, allow_destroy: true
     after_initialize :set_status , :if => :new_record?
 
-    enum status: [:new_consignment, :approved, :partially_approved, :rejected]
+    enum status: [:new_consignment, :approved, :partially_approved, :rejected, :needs_contract]
 
     validates :first_name, presence: true
     validates :last_name, presence: true

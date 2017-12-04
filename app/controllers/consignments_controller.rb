@@ -20,20 +20,21 @@ class ConsignmentsController < ApplicationController
 	def new
 		@consignment = Consignment.new
 		@consignment.need_pickup = false
-		@types = ['Dining or Breakfast', 'Accent Table or Desk', 'Art, Accessories or Other', 'Antiques']
+		@types = ["Art and Accessories ", "Dining Set w/ 4, 6 or 8 chairs", "Dining Buffet", "Dining China Cabinet", "Breakfast Set", "Bed – King, Queen, Full or Twin", "Nightstands ", "Dresser", "Sofa", "Loveseat", "Sectional S, M, L or XL", "Coffee Table", "Sofa Table", "Side Table", "Bombay Chest", "Occasion Chairs ", "Lamps ", "Chandelier", "Outdoor Dining", "Outdoor Seating -  of pieces"]
 		gon.types = @types;
 	end
+
 	def edit
 		@consignment = Consignment.find(params[:id])
 		@contract = @consignment.contracts.first
-		@types = ['Dining or Breakfast', 'Accent Table or Desk', 'Art, Accessories or Other', 'Antiques']
+		@types = ["Art and Accessories ", "Dining Set w/ 4, 6 or 8 chairs", "Dining Buffet", "Dining China Cabinet", "Breakfast Set", "Bed – King, Queen, Full or Twin", "Nightstands ", "Dresser", "Sofa", "Loveseat", "Sectional S, M, L or XL", "Coffee Table", "Sofa Table", "Side Table", "Bombay Chest", "Occasion Chairs ", "Lamps ", "Chandelier", "Outdoor Dining", "Outdoor Seating -  of pieces"]
 		gon.types = @types;
 	end
 
 	def admin
 		@consignment = Consignment.new
 		@consignment.need_pickup = false
-		@types = ['Dining or Breakfast', 'Accent Table or Desk', 'Art, Accessories or Other', 'Antiques']
+		@types = ["Art and Accessories ", "Dining Set w/ 4, 6 or 8 chairs", "Dining Buffet", "Dining China Cabinet", "Breakfast Set", "Bed – King, Queen, Full or Twin", "Nightstands ", "Dresser", "Sofa", "Loveseat", "Sectional S, M, L or XL", "Coffee Table", "Sofa Table", "Side Table", "Bombay Chest", "Occasion Chairs ", "Lamps ", "Chandelier", "Outdoor Dining", "Outdoor Seating -  of pieces"]
 		gon.types = @types;
 	end
 
@@ -68,6 +69,9 @@ class ConsignmentsController < ApplicationController
 		@consignment = Consignment.find(params[:id])
 		respond_to do |format|
 			if @consignment.update(consignment_params)
+				if @consignment.rejected?
+					uploaded = send_to_trello(@consignment)
+				end
 				if @consignment.dashboard_modified
 					format.html { redirect_to root_path, notice: "Nice! You just added updated #{@consignment.consigner_number}!" }
 				else
@@ -116,11 +120,10 @@ class ConsignmentsController < ApplicationController
 
 	def change_status
 		@consignment = Consignment.find(params[:consignment_id])
-		sent = send_to_trello(@consignment)
+		uploaded = send_to_trello(@consignment)
 		respond_to do |format|
-			if sent
-				@consignment.update(status: :approved)
-				format.html { redirect_to root_path, notice: "Success! Consignment has been Approved and sent to Trello!" }
+			if uploaded
+				format.html { redirect_to root_path, notice: "Success! Consignment has been sent to Trello!" }
 			else
 				flash[:alert] = "Something wen't wrong! Please try again.."
 				redirect_to root_path
@@ -129,16 +132,17 @@ class ConsignmentsController < ApplicationController
 	end
 
 	def send_to_trello(consignment)
-		list = Trello::List.find(Rails.configuration.trello_approved_list_id)
 		@consignment = consignment
 		@consignment_items = @consignment.items.all
+		if @consignment.rejected?
+			list = Trello::List.find(Rails.configuration.trello_rejected_list_id)
+		else
+			list = Trello::List.find(Rails.configuration.trello_approved_list_id)
+		end
+
 		card_name = "#{@consignment.first_name} #{@consignment.last_name} - #{@consignment.consigner_number}"
 		card_desc = trello_card_content(@consignment, @consignment_items)
 		card = Trello::Card::create(name: card_name, list_id: list.id, desc: card_desc)
-		approval_tasks_checklist = Trello::Checklist::create(name: "Approval Tasks", card_id: card.id, position: 1)
-		incoming_tasks_checklist = Trello::Checklist::create(name: "Incoming Tasks", card_id: card.id, position: 2)
-		iventory_tasks_checklist = Trello::Checklist::create(name: "Inventory Tasks", card_id: card.id, position: 3)
-
 
 		#Add attachments
 		@consignment_items.each do |item|
@@ -147,14 +151,21 @@ class ConsignmentsController < ApplicationController
 			end
 		end
 
-		["Scedule Pick-up or Drop-off", "Add Incoming Date"].each do |item|
-			approval_tasks_checklist.add_item(item)
-		end
-		["Items Received in Warehouse", "Tag Items with Consigner Number's "].each do |item|
-			incoming_tasks_checklist.add_item(item)
-		end
-		["Inventory All Items", "Update ASSET", "Final Pricing in ASSET", "Create Item Number's", "Send HelloSign Contract", "Signed Contract Received"].each do |item|
-			iventory_tasks_checklist.add_item(item)
+		unless @consignment.rejected?
+			#add checklists
+			approval_tasks_checklist = Trello::Checklist::create(name: "Approval Tasks", card_id: card.id, position: 1)
+			incoming_tasks_checklist = Trello::Checklist::create(name: "Incoming Tasks", card_id: card.id, position: 2)
+			iventory_tasks_checklist = Trello::Checklist::create(name: "Inventory Tasks", card_id: card.id, position: 3)
+
+			["Scedule Pick-up or Drop-off", "Add Incoming Date"].each do |item|
+				approval_tasks_checklist.add_item(item)
+			end
+			["Items Received in Warehouse", "Tag Items with Consigner Number's "].each do |item|
+				incoming_tasks_checklist.add_item(item)
+			end
+			["Inventory All Items", "Update ASSET", "Final Pricing in ASSET", "Create Item Number's", "Send HelloSign Contract", "Signed Contract Received"].each do |item|
+				iventory_tasks_checklist.add_item(item)
+			end
 		end
 		if !card.id.blank?
 			return true
@@ -162,6 +173,7 @@ class ConsignmentsController < ApplicationController
 			return false
 		end
 	end
+
 
 	def trello_card_content(consignment, consignment_items)
 		rows = []
@@ -206,12 +218,13 @@ class ConsignmentsController < ApplicationController
 		else
 			rows << "No Items Found"
 		end
-	    rows.join("\xA")
+		rows.join("\xA")
 	end
+
 
 	protected
 		def consignment_params
-			params.require(:consignment).permit(:first_name, :last_name, :email, :phone, :need_pickup, :date_available, :address_1_pickup, :address_2_pickup, :city_pickup, :state_pickup, :zip_pickup, :address_1_mailing, :address_2_mailing, :city_mailing, :state_mailing, :zip_mailing, :home_phone, :consigner_number, :consignment_price, :contact, :contract_additional_item, :status, :admin_created, :dashboard_modified, items_attributes: [:id, :image, :description, :item_type, :_destroy, :value, :cost, :price, :item_number, :item_status])
+			params.require(:consignment).permit(:first_name, :last_name, :email, :phone, :need_pickup, :date_available, :address_1_pickup, :address_2_pickup, :city_pickup, :state_pickup, :zip_pickup, :address_1_mailing, :address_2_mailing, :city_mailing, :state_mailing, :zip_mailing, :home_phone, :consigner_number, :consignment_price, :contact, :contract_additional_item, :status, :admin_created, :dashboard_modified, :other_email, :other_contact, :other_phone, items_attributes: [:id, :image, :description, :item_type, :_destroy, :value, :cost, :price, :item_number, :item_status, :price_range])
 		end
 
 	private

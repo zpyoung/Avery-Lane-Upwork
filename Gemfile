@@ -44,6 +44,9 @@ gem "ruby-trello"
 gem 'pdfkit'
 gem 'wkhtmltopdf-binary'
 gem 'autonumeric-rails'
+gem 'sidekiq'
+#needed for sidekiq
+gem 'sinatra', github: 'sinatra/sinatra'
 
 group :development, :test do
   gem 'byebug', platform: :mri

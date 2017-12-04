@@ -19,7 +19,7 @@
 										= f.input :item_type, collection: @types, prompt: "Select One"
 							.col-xs-6.col-lg-6
 								.itemInput
-									= f.input :price, label: "Consigment price:", input_html: {data: {autonumeric: true}, type: "text", class: "priceInput"}
+									= f.input :price_range, label: "Consigment price:", type: "text"
 							.col-xs-6.col-lg-6
 								.itemInput
 									= f.input :item_status, as: :select, collection: [["Accepting",:accepting],["Not Accepting", :not_accepting]], prompt: "Select One", label: "Consigment Status:"

@@ -11,7 +11,7 @@
         %meta{:name => 'pdfkit-margin_bottom', :content => '8mm' }
         %meta{:name => 'pdfkit-margin_left', :content => '8mm' }
         %meta{:name => 'pdfkit-margin_right', :content => '8mm' }
-        %meta{:name => 'pdfkit-header_right', :content => 'AVERY [page] of [topage]' }
+        %meta{:name => 'pdfkit-header_right', :content => '[page] of [topage]' }
         %meta{:name => 'pdfkit-footer_center', :content => '[page]'}
         %title= page_title_content
         -# = Gon::Base.render_data
@@ -20,7 +20,7 @@
         = csrf_meta_tags
         = yield(:head)
     -# %p{style: "position: absolute; right: 0; top: -15px text-align: left; font-size: 13px;"} AVERY
-    %p{style: "position: absolute; right: 0; top: -15px text-align: left; font-size: 13px;"} #{@consignment.consigner_number}
+    %p{style: "position: absolute; right: 0; top: 105px text-align: left; font-size: 13px;"} #{@consignment.last_name.titleize} - #{@consignment.consigner_number}
     .container.pdf_contract
         .row
             .col-xs-12
@@ -33,17 +33,17 @@
             %p
                 %strong CONSIGNMENT VENDOR:
                 Avery Lane Fine Consignments (Hereafter "AL Consignment")
-            %p{style: "margin-left: 125px;"} 15613 N. Greenway-Hayden Loop, Suite 102, Scottsdale, AZ 85260
-            %p{style: "margin-left: 125px;"} (480) 991-0700   | Darlene@AveryLaneHome.com
+            %p{style: "margin-left: 125px; margin-top:-5px"} 15613 N. Greenway-Hayden Loop, Suite 102, Scottsdale, AZ 85260
+            %p{style: "margin-left: 125px; margin-top:-5px"} (480) 991-0700   | Darlene@AveryLaneHome.com
 
             %p
                 %strong CONSIGNOR:
-                %span #{@consignment.first_name} #{@consignment.last_name} (Hereafter "Consignor")
-            %p{style: "margin-left: 68px;"} #{@consignment.address_1_mailing} #{@consignment.address_2_mailing} #{@consignment.city_mailing}, #{@consignment.state_mailing} #{@consignment.zip_mailing}
-            %p
-                %span{style: "margin-left: 68px;"} #{@consignment.email}
-                %span{style: "margin-left: 20px;"} #{@consignment.phone}
-                %span{style: "margin-left: 20px;"} #{@consignment.home_phone}
+                %span{style: "margin-left:60px; margin-top:-5px"} #{@consignment.first_name.titleize} #{@consignment.last_name.titleize} (Hereafter "Consignor")
+            %p{style: "margin-left: 128px; padding: 0px; margin-top:-5px"} #{@consignment.address_1_mailing} #{@consignment.address_2_mailing} #{@consignment.city_mailing}, #{@consignment.state_mailing} #{@consignment.zip_mailing}
+            %p{style: "margin-top:-5px"}
+                %span{style: "margin-left: 128px; margin-top:-5px"} #{@consignment.email}
+                %span{style: "margin-left: 20px; margin-top:-5px"} #{@consignment.phone}
+                %span{style: "margin-left: 20px; margin-top:-5px"} #{@consignment.home_phone}
     .row
         .col-xs-12
             %p #{@contract.intro}
@@ -73,12 +73,12 @@
             %p #{@contract.insurance}
     .row
         .col-xs-12
-            .initial_image{style: "margin-left: 160px; margin-bottom: -35px;"}
+            .initial_image{style: "margin-left: 150px; margin-bottom: -25px;"}
                 = image_tag(image_url("ar_sig.png"), alt: "Averylane", style: "margin: 0 auto;")
             %p{style: "font-size: 15px;"}
                 %strong Avery Lane Fine Consignments:
                 %span{style: "padding-right: 50px;"} Darlene Richert - President
-                %span Consignor's Signature
+                %span #{@consignment.first_name.titleize} #{@consignment.last_name.titleize}
     .row
         .col-xs-12
             .box
@@ -89,8 +89,6 @@
 
             .pb_break{style: "page-break-after:always !important;"}
             %br/
-            %h4
-                %u The Items we will accept for consignment and prices will be determined upon receipt:
             %h5
                 %strong ACCEPTED ITEMS:
             %table.table.itemsTable
@@ -106,7 +104,7 @@
                                 %td.text-center{style: "max-width:150px;width:150px;"}
                                     %img.img-responsive.itemImage{:src => "https://#{item.image}", :alt => "", style: "margin: 0 auto;"}/
                                 %td= item.description
-                                %td #{number_to_currency(item.price)}
+                                %td= item.price_range
             %br/
             %h5
                 %strong NOT ACCEPTING AT THIS TIME:
@@ -123,7 +121,7 @@
                                 %td.text-center{style: "max-width:150px;width:150px;"}
                                     %img.img-responsive.itemImage{:src => "#{item.image}", :alt => "", style: "margin: 0 auto;"}/
                                 %td= item.description
-                                %td{style:"text-align: center"}= number_to_currency(item.price)
+                                %td{style:"text-align: center"}= item.price_range
     :css
         html, body {
             font-family: arial, sans-serif;

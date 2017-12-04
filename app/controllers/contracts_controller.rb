@@ -5,6 +5,7 @@ class ContractsController < ApplicationController
         @contract = Contract.new
         @consignment = Consignment.find(params[:consignment_id])
     end
+
     def edit
         @consignment = Consignment.find(params[:consignment_id])
         @contract = @consignment.contracts.find(params[:id])
@@ -13,19 +14,35 @@ class ContractsController < ApplicationController
     def show
         @consignment = Consignment.find(params[:consignment_id])
         @contract = @consignment.contracts.first
-        # generate_pdf
+        pdf = generate_pdf(@contract, @consignment)
+        # add = S3Store.new(pdf).store
+        # binding.pry
     end
 
-    def generate_pdf
+    # def generate_pdf
+    #     html = render_to_string(:show)
+    #     kit = PDFKit.new(html, page_size: 'letter')
+    #     pdf = kit.to_pdf
+    #     # puts pdf
+    #     return pdf
+    # end
+
+    def generate_pdf(contract, consignment)
         html = render_to_string(:show)
         kit = PDFKit.new(html, page_size: 'letter')
         pdf = kit.to_pdf
 
+        # save_path = Rails.root.join('public','current_contract.pdf')
+        #     File.open(save_path, 'w:ASCII-8BIT') do |file|
+        #     file << pdf
+        # end
         send_data(pdf,
-        filename: 'some_fancy_file_name.pdf',
+        filename: "#{getFileName(consignment)}",
         disposition: 'attachment',
         type: :pdf)
     end
+
+
     def create
         @consignment = Consignment.find(params[:consignment_id])
         @contract = @consignment.contracts.create(contract_params)
@@ -68,7 +85,13 @@ class ContractsController < ApplicationController
 		end
     end
 
-    def contract_params
-        params.require(:contract).permit(:contract_type, :intro, :systematic_price_reductions, :optional_extension, :end_of_agreement, :note, :payment_to_consignor, :insurance, :additional_notes, :experation_date, :contract_status, accepted_items: [], rejected_items: [], terms_and_conditions_list: [])
-    end
+    protected
+
+        def getFileName(consignment)
+          filename ||= "#{consignment.last_name}-#{consignment.consigner_number}-contract.pdf".gsub(/[^a-zA-Z0-9_\.]/, '_')
+        end
+
+        def contract_params
+            params.require(:contract).permit(:contract_type, :intro, :systematic_price_reductions, :optional_extension, :end_of_agreement, :note, :payment_to_consignor, :insurance, :additional_notes, :experation_date, :contract_status, accepted_items: [], rejected_items: [], terms_and_conditions_list: [])
+        end
 end

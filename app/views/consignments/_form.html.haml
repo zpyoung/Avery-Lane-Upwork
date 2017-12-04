@@ -3,7 +3,7 @@
     .consignmentNumber.hidden
       - if controller.action_name === "edit"
         = f.input :consigner_number, label: "Consigner #", wrapper_html: {class: "col-xs-6"}
-        = f.input :status, as: :select, collection: [["New", :new_consignment],["Approved", :approved],["Partially Approved", :partially_approved],["Rejected", :rejected]], prompt: "Select One", label: "Consigment Status:",wrapper_html: {class: "col-xs-6"}
+        = f.input :status, as: :select, collection: [["New", :new_consignment],["Approved", :approved],["Partially Approved", :partially_approved],["Rejected", :rejected], ["Needs Contract", :needs_contract]], prompt: "Select One", label: "Consigment Status:",wrapper_html: {class: "col-xs-6"}
       - else
         = f.input :consigner_number, label: "Consigner #", wrapper_html: {class: "col-xs-12"}
     = f.input :admin_created, :as => :hidden, value: false, input_html: {class: "adminCreated"}
@@ -12,8 +12,10 @@
     = f.input :last_name, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-6"}, label: "Last Name", placeholder: "Smith", input_html: {class: "checkValid"}
     = f.input :email, wrapper_html: {class: "col-xs-12 col-lg-6"}, placeholder: "janesmith@example.com", input_html: {class: "checkValid"}
     = f.input :phone, label: "Mobile Phone", input_html: { class: 'phoneInput checkValid' }, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-3"}, placeholder: "555-555-5555"
-
     = f.input :home_phone, input_html: { class: 'phoneInput' }, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-3"}, placeholder: "555-555-5555"
+    = f.input :other_contact, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-4"}, label: "Other Contact", placeholder: "John"
+    = f.input :other_email, wrapper_html: {class: "col-xs-12 col-lg-4"}, placeholder: "johnsmith@example.com"
+    = f.input :other_phone, input_html: { class: 'phoneInput' }, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-4"}, placeholder: "555-555-5555"
     = f.input :date_available, :as => :date_picker, wrapper_html: {class: "col-xs-12 col-sm-6 col-md-6"}, label: "What date will item(s) be available?"
     = f.input :date_available, :as => :hidden, input_html: {class: "hiddenDateInput checkValid"}
     = f.input :need_pickup, as: :radio_buttons, wrapper_html: {class: "col-xs-12 col-md-6"}, label: "Do these items need to be picked up?"

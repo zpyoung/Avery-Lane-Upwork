@@ -8,7 +8,7 @@ class DashboardController < ApplicationController
   end
 
   def get_trello_data
-    member = Trello::Member.find("zacharyyoung9")
+    member = Trello::Member.find("averylanehome")
     boards = member.boards
     puts boards.to_json
     binding.pry
