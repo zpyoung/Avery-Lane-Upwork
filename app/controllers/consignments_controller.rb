@@ -199,7 +199,7 @@ class ConsignmentsController < ApplicationController
 		if consignment_items.any?
 			consignment_items.each do |item|
 				if item.accepting?
-					rows << "#{item.item_type} - $#{item.price}"
+					rows << "#{item.item_type} - #{item.price_range}"
 				end
 			end
 		else
