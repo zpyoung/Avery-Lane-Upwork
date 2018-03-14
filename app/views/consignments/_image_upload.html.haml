@@ -53,6 +53,7 @@
 				paramName:        'file', // S3 does not like nested name fields i.e. name="user[avatar_url]"
 				dataType:         'XML',  // S3 returns XML if success_action_status is set to 201
 				replaceFileInput: false,
+				imageOrientation: true,
 				limitMultiFileUploads: 12,
 				maxNumberOfFiles: 12,
 				progressall: function (e, data) {
@@ -66,6 +67,7 @@
 						css('display', 'block').
 						css('width', '0%').
 						text("Loading...");
+					console.log("HEY HEY")
 				},
 				done: function(e, data) {
 					submitButton.prop('disabled', false);

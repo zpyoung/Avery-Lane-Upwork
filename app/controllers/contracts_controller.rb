@@ -11,37 +11,22 @@ class ContractsController < ApplicationController
         @contract = @consignment.contracts.find(params[:id])
     end
 
+    def check_contract_updated
+        @contract = Contract.find(params[:contract])
+        updated = @contract.contract_url.present?
+        puts "$$$$$$$$$$$$$$$$$$ #{updated}"
+        respond_to do |format|
+            format.json {render json: {updated: updated, url: @contract.contract_url}}
+        end
+    end
+
     def show
         @consignment = Consignment.find(params[:consignment_id])
         @contract = @consignment.contracts.first
-        pdf = generate_pdf(@contract, @consignment)
-        # add = S3Store.new(pdf).store
-        # binding.pry
-    end
-
-    # def generate_pdf
-    #     html = render_to_string(:show)
-    #     kit = PDFKit.new(html, page_size: 'letter')
-    #     pdf = kit.to_pdf
-    #     # puts pdf
-    #     return pdf
-    # end
-
-    def generate_pdf(contract, consignment)
         html = render_to_string(:show)
-        kit = PDFKit.new(html, page_size: 'letter')
-        pdf = kit.to_pdf
-
-        # save_path = Rails.root.join('public','current_contract.pdf')
-        #     File.open(save_path, 'w:ASCII-8BIT') do |file|
-        #     file << pdf
-        # end
-        send_data(pdf,
-        filename: "#{getFileName(consignment)}",
-        disposition: 'attachment',
-        type: :pdf)
+        @contract.update(contract_url: nil)
+        contract = ContractsWorker.perform_async(@consignment.id, @contract.id, html)
     end
-
 
     def create
         @consignment = Consignment.find(params[:consignment_id])

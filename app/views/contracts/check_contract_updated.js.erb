@@ -1,0 +1,24 @@
+$(".loading-contract").removeClass('hidden')
+$(".view-contract").addClass('hidden')
+
+
+function showlink(url) {
+    $(".loading-contract").addClass('hidden')
+    $(".view-contract").removeClass('hidden')
+    $(".contract-link a").attr('href', url )
+}
+
+
+function checkUpdated(){
+    $.get("<%check_contract_updated_path(contract: params[:contract])%>", function(data, status){
+        updated = data.updated
+        console.log(updated)
+        if (updated === true) {
+            showlink(data.url);
+            return true
+        } else {
+            setTimeout(checkUpdated, 3000);
+        }
+    });
+}
+checkUpdated();

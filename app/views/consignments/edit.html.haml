@@ -16,10 +16,44 @@
                         .tab-pane.fade#contractTab
                             = render partial: "contracts/form", locals: {consignment: @consignment, contract: @contract}
                 .panel-footer
-                    = link_to "Generate Contract", consignment_contract_path(@consignment, @contract, format: "pdf"), target: "_blank"
+                    - if @contract.contract_url.blank?
+                        %div
+                            %span.view-contract.hidden
+                                %span.contract-link= link_to 'View Contract', @contract.contract_url, target: "_blank", class: 'btn btn-primary'
+                            %span.loading-contract.hidden
+                                .fa.fa-spinner.fa-spin
+                                loading...
+                            %span= link_to "Generate Contract", consignment_contract_path(@consignment, @contract), remote: true, class: 'btn btn-warning generate-contract-btn'
+                    - else
+                        %div
+                            %span.view-contract
+                                %span.contract-link= link_to 'View Contract', @contract.contract_url, target: "_blank", class: 'btn btn-primary'
+                            %span.loading-contract.hidden
+                                .fa.fa-spinner.fa-spin
+                                loading...
+                            %span= link_to "Regenerate Contract", consignment_contract_path(@consignment, @contract), remote: true, class: 'btn btn-warning generate-contract-btn'
 
 :javascript
-    // $(document).ready(function(){
-    //     $("#consignmentTab").show();
-    //     $("#contractTab").hide();
-    // });
+
+    $(".generate-contract-btn").click(function(){
+        $(".loading-contract").removeClass('hidden')
+        $(".view-contract").addClass('hidden')
+        setTimeout(checkUpdated, 1000)
+    });
+    function showlink(url) {
+        $(".loading-contract").addClass('hidden')
+        $(".view-contract").removeClass('hidden')
+        $(".contract-link a").attr('href', url )
+    }
+    function checkUpdated(){
+        $.get("#{check_contract_updated_path(contract: @contract.id)}", function(data, status){
+            updated = data.updated
+            console.log(updated)
+            if (updated === true) {
+                showlink(data.url);
+                return true
+            } else {
+                setTimeout(checkUpdated, 3000);
+            }
+        });
+    }

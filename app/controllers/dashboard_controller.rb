@@ -11,7 +11,6 @@ class DashboardController < ApplicationController
     member = Trello::Member.find("averylanehome")
     boards = member.boards
     puts boards.to_json
-    binding.pry
     return boards.to_json
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171204223752) do
+ActiveRecord::Schema.define(version: 20180313173505) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,13 +60,18 @@ ActiveRecord::Schema.define(version: 20171204223752) do
     t.text     "payment_to_consignor"
     t.text     "insurance"
     t.text     "additional_notes"
-    t.text     "accepted_items",              default: [],              array: true
-    t.text     "rejected_items",              default: [],              array: true
+    t.text     "accepted_items",                  default: [],              array: true
+    t.text     "rejected_items",                  default: [],              array: true
     t.datetime "experation_date"
     t.integer  "contract_status"
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
-    t.text     "terms_and_conditions_list",   default: [],              array: true
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
+    t.text     "terms_and_conditions_list",       default: [],              array: true
+    t.string   "generated_contract_file_name"
+    t.string   "generated_contract_content_type"
+    t.integer  "generated_contract_file_size"
+    t.datetime "generated_contract_updated_at"
+    t.string   "contract_url"
     t.index ["consignment_id"], name: "index_contracts_on_consignment_id", using: :btree
   end
 

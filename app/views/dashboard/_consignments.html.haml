@@ -35,10 +35,10 @@
                                         %td #{c.first_name} #{c.last_name}
                                         %td= c.items.count
                                         %td.actions
-                                            = link_to fa_icon("trash"), consignment_path(c), remote: true, title: "Delete", method: :delete, action: :destroy, data: { confirm: "Are you sure you want to delete this consignment? You cannot undo this action." }, class: "delete_section_item pull-right"
-                                            = link_to fa_icon("files-o"), duplicate_consignment_path(consignment_id: c.id), method: :post, action: :duplicate_consignment, target: "_self", title: "Duplicate", data: { confirm: "Are you sure you want to duplicate this consignment?", type: "accept" }, class: "pull-right"
-                                            = link_to fa_icon("pencil"), edit_consignment_path(c), class: "pull-right", title: "Edit"
-                                            = link_to fa_icon("send"), change_status_path(consignment_id: c.id), method: :post, action: :change_status, class: "pull-right", title: "Change Status", remote: true, data: { confirm: "Are you sure you want send this Consignment and it's Items to Trello?" }
+                                            = link_to fa_icon("trash"), consignment_path(c), remote: true, title: "Delete", method: :delete, action: :destroy, data: { confirm: "Are you sure you want to delete this consignment? You cannot undo this action." }, class: "delete_section_item pull-right btn btn-danger last"
+                                            = link_to fa_icon("files-o"), duplicate_consignment_path(consignment_id: c.id), method: :post, action: :duplicate_consignment, target: "_self", title: "Duplicate", data: { confirm: "Are you sure you want to duplicate this consignment?", type: "accept" }, class: "pull-right btn btn-warning"
+                                            = link_to fa_icon("pencil"), edit_consignment_path(c), class: "pull-right btn btn-info", title: "Edit"
+                                            = link_to fa_icon("send"), change_status_path(consignment_id: c.id), method: :post, action: :change_status, class: "pull-right btn btn-success first", title: "Send to Trello", remote: true, data: { confirm: "Are you sure you want send this Consignment and it's Items to Trello?" }
 
 
         .modal.fade#consignment_modal

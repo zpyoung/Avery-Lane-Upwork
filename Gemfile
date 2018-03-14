@@ -47,6 +47,7 @@ gem 'autonumeric-rails'
 gem 'sidekiq'
 #needed for sidekiq
 gem 'sinatra', github: 'sinatra/sinatra'
+gem "paperclip", "~> 5.2.1"
 
 group :development, :test do
   gem 'byebug', platform: :mri

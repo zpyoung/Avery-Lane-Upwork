@@ -42,7 +42,24 @@
   white-space: nowrap;
   a {
     margin-left: 5px;
+    &.btn {
+      margin-left: 1px;
+      padding: 4px 8px;
+      border-radius: 0;
+      background-color: #666;
+    }
+    &.first {
+      border-radius: 4px 0 0 4px;
+    }
+    &.last {
+      border-radius: 0 4px 4px 0;
+    }
+    &:hover {
+      border-color: $progress-bar-bg;
+      background-color: #5d9cec;
+    }
   }
+
 }
 
 .fa {

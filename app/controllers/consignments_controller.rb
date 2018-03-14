@@ -1,5 +1,6 @@
 class ConsignmentsController < ApplicationController
 	before_action :set_s3_direct_post, only: [:new, :edit, :create, :update, :admin]
+	before_action :set_item_types, only: %i[new edit admin]
 	layout 'landing', only: %i[new landing show admin]
 
 	def index
@@ -20,29 +21,22 @@ class ConsignmentsController < ApplicationController
 	def new
 		@consignment = Consignment.new
 		@consignment.need_pickup = false
-		@types = ["Art and Accessories ", "Dining Set w/ 4, 6 or 8 chairs", "Dining Buffet", "Dining China Cabinet", "Breakfast Set", "Bed – King, Queen, Full or Twin", "Nightstands ", "Dresser", "Sofa", "Loveseat", "Sectional S, M, L or XL", "Coffee Table", "Sofa Table", "Side Table", "Bombay Chest", "Occasion Chairs ", "Lamps ", "Chandelier", "Outdoor Dining", "Outdoor Seating -  of pieces"]
-		gon.types = @types;
 	end
 
 	def edit
 		@consignment = Consignment.find(params[:id])
 		@contract = @consignment.contracts.first
-		@types = ["Art and Accessories ", "Dining Set w/ 4, 6 or 8 chairs", "Dining Buffet", "Dining China Cabinet", "Breakfast Set", "Bed – King, Queen, Full or Twin", "Nightstands ", "Dresser", "Sofa", "Loveseat", "Sectional S, M, L or XL", "Coffee Table", "Sofa Table", "Side Table", "Bombay Chest", "Occasion Chairs ", "Lamps ", "Chandelier", "Outdoor Dining", "Outdoor Seating -  of pieces"]
-		gon.types = @types;
 	end
 
 	def admin
 		@consignment = Consignment.new
 		@consignment.need_pickup = false
-		@types = ["Art and Accessories ", "Dining Set w/ 4, 6 or 8 chairs", "Dining Buffet", "Dining China Cabinet", "Breakfast Set", "Bed – King, Queen, Full or Twin", "Nightstands ", "Dresser", "Sofa", "Loveseat", "Sectional S, M, L or XL", "Coffee Table", "Sofa Table", "Side Table", "Bombay Chest", "Occasion Chairs ", "Lamps ", "Chandelier", "Outdoor Dining", "Outdoor Seating -  of pieces"]
-		gon.types = @types;
 	end
 
 	def create
 		@consignment = Consignment.create(consignment_params)
 		respond_to do |format|
 			if @consignment.save
-				# binding.pry
 				generate_contract(@consignment)
 				if @consignment.dashboard_modified
 					format.html{redirect_to root_path, notice: "Consignment created successfully!"}
@@ -73,9 +67,9 @@ class ConsignmentsController < ApplicationController
 					uploaded = send_to_trello(@consignment)
 				end
 				if @consignment.dashboard_modified
-					format.html { redirect_to root_path, notice: "Nice! You just added updated #{@consignment.consigner_number}!" }
+					format.html { redirect_to root_path, notice: "Nice! Consignment was updated successfully!" }
 				else
-					format.html { redirect_to root_path, notice: "Nice! You just added updated #{@consignment.consigner_number}!" }
+					format.html { redirect_to root_path, notice: "Nice! Consignment was updated successfully!" }
 				end
 			else
 				format.html { redirect_to root_path}
@@ -225,6 +219,11 @@ class ConsignmentsController < ApplicationController
 	protected
 		def consignment_params
 			params.require(:consignment).permit(:first_name, :last_name, :email, :phone, :need_pickup, :date_available, :address_1_pickup, :address_2_pickup, :city_pickup, :state_pickup, :zip_pickup, :address_1_mailing, :address_2_mailing, :city_mailing, :state_mailing, :zip_mailing, :home_phone, :consigner_number, :consignment_price, :contact, :contract_additional_item, :status, :admin_created, :dashboard_modified, :other_email, :other_contact, :other_phone, items_attributes: [:id, :image, :description, :item_type, :_destroy, :value, :cost, :price, :item_number, :item_status, :price_range])
+		end
+
+		def set_item_types
+			@types = Item::ITEM_TYPES
+			gon.types = @types
 		end
 
 	private
