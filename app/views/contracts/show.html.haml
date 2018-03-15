@@ -91,67 +91,83 @@
             %br/
             %h5
                 %strong ACCEPTED ITEMS:
-            %table.table.itemsTable
-                %thead
-                    %tr
-                        %th{style: "max-width:150px;width:150px;"} Picture
-                        %th Description
-                        %th Price
-                %tbody
-                    - @consignment.items.each do |item|
-                        - if item.accepting?
-                            %tr
-                                %td.text-center{style: "max-width:150px;width:150px;"}
-                                    %img.img-responsive.itemImage{:src => "https://#{item.image}", :alt => "", style: "margin: 0 auto;"}/
-                                %td= item.description
-                                %td= item.price_range
-            %br/
-            %h5
-                %strong NOT ACCEPTING AT THIS TIME:
-            %table.table.itemsTable
-                %thead
-                    %tr
-                        %th{style: "max-width:150px;width:150px;"} Picture
-                        %th Description
-                        %th Price
-                %tbody
-                    - @consignment.items.each do |item|
-                        - if item.not_accepting?
-                            %tr
-                                %td.text-center{style: "max-width:150px;width:150px;"}
-                                    %img.img-responsive.itemImage{:src => "#{item.image}", :alt => "", style: "margin: 0 auto;"}/
-                                %td= item.description
-                                %td{style:"text-align: center"}= item.price_range
-    :css
-        html, body {
-            font-family: arial, sans-serif;
-        }
-        p, li {
-            font-weight: normal;
-            font-size: 10px;
-        }
-        .itemsTable {
-          font-family: arial, sans-serif;
-          border-collapse: collapse;
-          width: 100%;
-        }
-        .itemsTable thead {
-          background-color: #9CB04D;
-          font-size: 1.5em;
-        }
-        .itemsTable thead th {
-          color: #000 !important;
-          text-align: center;
-          font-weight: normal;
-        }
-        .itemsTable td, .itemsTable th {
-          border: 1px solid #dddddd;
-          text-align: left;
-          padding: 8px;
-        }
-        .itemsTable tr:nth-child(even) {
-          background-color: #F5FAEA;
-        }
-        .itemsTable .itemImage {
-          max-width: 100px;
-        }
+
+            -  0.step(roundup(@accepted_items.count, 6), 6) do |num|
+                - unless num == 0
+                    - if num > 6
+                        .pb_break{style: "page-break-after:always !important;"}
+                    %table.table.itemsTable{style: "page-break-before: avoid;"}
+                        %thead{style: "page-break-before: avoid;"}
+                            %tr{style: "page-break-after: avoid !important;"}
+                                %th{style: "max-width:150px;width:150px; page-break-before: avoid;"} Picture
+                                %th{style: "page-break-before: avoid;"} Description
+                                %th{style: "page-break-before: avoid;"} Price
+                        %tbody
+                            - @accepted_items.each_with_index do |item, index|
+                                - if index < num && index >= (num - 6)
+                                    %tr{style: "page-break-after: avoid !important;"}
+                                        %td.text-center{style: "page-break-before: avoid; max-width:150px;width:150px;"}
+                                            %img.img-responsive.itemImage{:src => "https://#{item.image}", :alt => "", style: "margin: 0 auto;"}/
+                                        %td{style: "page-break-before: avoid;"}= item.description
+                                        %td{style: "page-break-before: avoid;"}= item.price_range
+
+
+            -  0.step(roundup(@unaccepted_items.count, 6), 6) do |num|
+                - unless num == 0
+                    - if num > 6
+                        .pb_break{style: "page-break-after:always !important;"}
+                    - else
+                        .pb_break{style: "page-break-after:always !important;"}
+                        %br/
+                        %h5{style: "page-break-before: avoid;"}
+                            %strong NOT ACCEPTING AT THIS TIME:
+                    %table.table.itemsTable
+                        %thead{style: "page-break-before: avoid;"}
+                            %tr{style: "page-break-before: avoid;"}
+                                %th{style: "max-width:150px;width:150px; page-break-before: avoid;"} Picture
+                                %th{style: "page-break-before: avoid;"} Description
+                                %th{style: "page-break-before: avoid;"} Price
+                        %tbody
+                            - @unaccepted_items.each_with_index do |item, index|
+                                - if index < num && index >= (num - 6)
+                                    %tr{style: "page-break-before: avoid;"}
+                                        %td.text-center{style: "max-width:150px;width:150px;"}
+                                            %img.img-responsive.itemImage{:src => "https://#{item.image}", :alt => "", style: "margin: 0 auto;"}/
+                                        %td= item.description
+                                        %td{style:"text-align: center"}= item.price_range
+        :css
+            html, body {
+                font-family: arial, sans-serif;
+            }
+            p, li {
+                font-weight: normal;
+                font-size: 10px;
+            }
+            .itemsTable {
+              font-family: arial, sans-serif;
+              border-collapse: collapse;
+              width: 100%;
+            }
+            .itemsTable thead {
+              background-color: #9CB04D;
+              font-size: 1.5em;
+            }
+            .itemsTable thead th {
+              color: #000 !important;
+              text-align: center;
+              font-weight: normal;
+            }
+            .itemsTable td, .itemsTable th {
+              border: 1px solid #dddddd;
+              text-align: left;
+              padding: 8px;
+            }
+            .itemsTable tr:nth-child(even) {
+              background-color: #F5FAEA;
+            }
+            .itemsTable .itemImage {
+              max-width: 100px;
+            }
+            .itemsTable, table.itemsTable tr td, table.itemsTable tr th {
+              page-break-inside: avoid !important;
+            }

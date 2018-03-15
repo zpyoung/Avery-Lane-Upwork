@@ -22,10 +22,12 @@ class ContractsController < ApplicationController
 
     def show
         @consignment = Consignment.find(params[:consignment_id])
+        @accepted_items = @consignment.items.where(item_status: :accepting)
+        @unaccepted_items = @consignment.items.where(item_status: :not_accepting)
         @contract = @consignment.contracts.first
         html = render_to_string(:show)
         @contract.update(contract_url: nil)
-        contract = ContractsWorker.perform_async(@consignment.id, @contract.id, html)
+        ContractsWorker.perform_async(@consignment.id, @contract.id, html)
     end
 
     def create
