@@ -4,8 +4,8 @@ class ItemsController < ApplicationController
     def new
         @consignment = Consignment.find(params[:consignment_id])
         @item = Item.new
-        @types = ['Dining or Breakfast', 'Accent Table or Desk', 'Art, Accessories or Other', 'Antiques']
-        gon.types = @types;
+        @types = Item::ITEM_TYPES
+		gon.types = @types
     end
 
     def create
