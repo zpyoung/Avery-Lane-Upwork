@@ -73,6 +73,9 @@
     width: 150px;
     font-size: 1.3em;
   }
+  .inputError {
+    border: 1px solid red !important;
+  }
   @media(max-width: 768px) {
     .submitBtn {
       color: #fff;

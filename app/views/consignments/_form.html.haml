@@ -101,9 +101,17 @@
       var invalids = [];
       $(".consignmentForm .checkValid").each(function(i){
         if ($(this).val() === "" ) {
-          invalids.push(i)
+          invalids.push(i);
+          $(this).addClass("inputError");
+          if ($(this).attr('id')=='consignment_date_available'){
+            $('.input-group.date.datetimepicker').addClass("inputError")
+          }
+        }
+        else{
+          $(this).removeClass("inputError")
         }
       });
+
       return invalids.length
     }
 
