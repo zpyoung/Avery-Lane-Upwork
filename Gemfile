@@ -63,6 +63,7 @@ group :development do
   gem "spring-commands-rspec"
   gem "faker"
   gem "mailcatcher"
+  gem 'bcrypt', git: 'https://github.com/codahale/bcrypt-ruby.git', :require => 'bcrypt'
 end
 
 group :test do

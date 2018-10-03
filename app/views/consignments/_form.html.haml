@@ -8,13 +8,13 @@
         = f.input :consigner_number, label: "Consigner #", wrapper_html: {class: "col-xs-12"}
     = f.input :admin_created, :as => :hidden, value: false, input_html: {class: "adminCreated"}
     = f.input :dashboard_modified, :as => :hidden, value: false, input_html: {class: "dashboardModified"}
-    = f.input :first_name, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-6"}, label: "First Name", placeholder: "Jane", input_html: {class: "checkValid"}
-    = f.input :last_name, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-6"}, label: "Last Name", placeholder: "Smith", input_html: {class: "checkValid"}
-    = f.input :email, wrapper_html: {class: "col-xs-12 col-lg-6"}, placeholder: "janesmith@example.com", input_html: {class: "checkValid"}
+    = f.input :first_name, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-6"}, label: "First Name", input_html: {class: "checkValid"}
+    = f.input :last_name, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-6"}, label: "Last Name", input_html: {class: "checkValid"}
+    = f.input :email, wrapper_html: {class: "col-xs-12 col-lg-6"}, input_html: {class: "checkValid"}
     = f.input :phone, label: "Mobile Phone", input_html: { class: 'phoneInput checkValid' }, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-3"}, placeholder: "555-555-5555"
     = f.input :home_phone, input_html: { class: 'phoneInput' }, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-3"}, placeholder: "555-555-5555"
-    = f.input :other_contact, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-4"}, label: "Other Contact", placeholder: "John"
-    = f.input :other_email, wrapper_html: {class: "col-xs-12 col-lg-4"}, placeholder: "johnsmith@example.com"
+    = f.input :other_contact, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-4"}, label: "Other Contact"
+    = f.input :other_email, wrapper_html: {class: "col-xs-12 col-lg-4"}
     = f.input :other_phone, input_html: { class: 'phoneInput' }, wrapper_html: {class: "col-xs-12 col-sm-6 col-lg-4"}, placeholder: "555-555-5555"
     = f.input :date_available, :as => :date_picker, wrapper_html: {class: "col-xs-12 col-sm-6 col-md-6"}, label: "What date will item(s) be available?"
     = f.input :date_available, :as => :hidden, input_html: {class: "hiddenDateInput checkValid"}
@@ -23,11 +23,11 @@
       .panel.panel-primary
         .panel-body
           %p.pull-left Mailing Address
-          = f.input :address_1_mailing, label: "Address 1", input_html: { class: 'mailingInput checkValid' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-12"}, placeholder: "123 Avery Lane"
-          = f.input :address_2_mailing, label: "Address 2", input_html: { class: 'mailingInput' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-12"}, placeholder: "Suite 20"
-          = f.input :city_mailing, label: "City", input_html: { class: 'mailingInput checkValid' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-12"}, placeholder: "Scottsdale"
-          = f.input :state_mailing, label: "State", input_html: { class: 'mailingInput checkValid' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-4"}, placeholder: "AZ"
-          = f.input :zip_mailing, label: "ZIP", input_html: { class: 'mailingInput checkValid' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-8"}, placeholder: "85205"
+          = f.input :address_1_mailing, label: "Address 1", input_html: { class: 'mailingInput checkValid' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-12"}
+          = f.input :address_2_mailing, label: "Address 2", input_html: { class: 'mailingInput' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-12"}
+          = f.input :city_mailing, label: "City", input_html: { class: 'mailingInput checkValid' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-12"}
+          = f.input :state_mailing, label: "State", input_html: { class: 'mailingInput checkValid' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-4"}
+          = f.input :zip_mailing, label: "ZIP", input_html: { class: 'mailingInput checkValid' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-8"}
 
     .col-lg-6.col-xs-12.pickupAddressBox
       .panel.panel-primary
@@ -36,11 +36,11 @@
           .checkbox.pull-right
             %label.pull-right
               %input.sameAsMailing{type: "checkbox"} &nbsp; Same as Mailing Address
-          = f.input :address_1_pickup, label: "Address 1", input_html: { class: '' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-12"}, placeholder: "123 Avery Lane"
-          = f.input :address_2_pickup, label: "Address 2", input_html: { class: '' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-12"}, placeholder: "Suite 20"
-          = f.input :city_pickup, label: "City", input_html: { class: '' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-12"}, placeholder: "Scottsdale"
-          = f.input :state_pickup, label: "State", input_html: { class: '' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-4"}, placeholder: "AZ"
-          = f.input :zip_pickup, label: "ZIP", input_html: { class: '' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-8"}, placeholder: "85205"
+          = f.input :address_1_pickup, label: "Address 1", input_html: { class: '' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-12"}
+          = f.input :address_2_pickup, label: "Address 2", input_html: { class: '' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-12"}
+          = f.input :city_pickup, label: "City", input_html: { class: '' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-12"}
+          = f.input :state_pickup, label: "State", input_html: { class: '' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-4"}
+          = f.input :zip_pickup, label: "ZIP", input_html: { class: '' }, wrapper_html: {class: "col-xs-12 col-sm-12 col-lg-8"}
     .row
       .col-xs-12
         %h3 Items
