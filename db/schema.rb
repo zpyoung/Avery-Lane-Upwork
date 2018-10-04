@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180313173505) do
+ActiveRecord::Schema.define(version: 20181003233828) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 20180313173505) do
     t.string   "other_phone"
     t.string   "other_email"
     t.string   "other_contact"
+    t.boolean  "trello_status",            default: false
   end
 
   create_table "contracts", force: :cascade do |t|

@@ -19,6 +19,7 @@
     = f.input :date_available, :as => :date_picker, wrapper_html: {class: "col-xs-12 col-sm-6 col-md-6"}, label: "What date will item(s) be available?"
     = f.input :date_available, :as => :hidden, input_html: {class: "hiddenDateInput checkValid"}
     = f.input :need_pickup, as: :radio_buttons, wrapper_html: {class: "col-xs-12 col-md-6"}, label: "Do these items need to be picked up?"
+    = f.input :trello_status, :as => :hidden, input_html: {class: "trelloStatus"}
     .col-lg-6.col-xs-12.mailingAddressBox
       .panel.panel-primary
         .panel-body

@@ -36,6 +36,7 @@ class ConsignmentWorker < ApplicationController
         list = Trello::List.find(Rails.configuration.trello_approved_list_id)
         @consignment = consignment
         @consignment_items = @consignment.items.all
+        @consignment.trello_status = true
         card_name = "#{@consignment.first_name} #{@consignment.last_name} - #{@consignment.consigner_number}"
         card_desc = trello_card_content(@consignment, @consignment_items)
         card = Trello::Card::create(name: card_name, list_id: list.id, desc: card_desc)

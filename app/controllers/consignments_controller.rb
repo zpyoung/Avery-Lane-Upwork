@@ -128,6 +128,7 @@ class ConsignmentsController < ApplicationController
 	def send_to_trello(consignment)
 		@consignment = consignment
 		@consignment_items = @consignment.items.all
+		@consignment.update_attribute(:trello_status, true)
 		if @consignment.rejected?
 			list = Trello::List.find(Rails.configuration.trello_rejected_list_id)
 		else
@@ -218,7 +219,7 @@ class ConsignmentsController < ApplicationController
 
 	protected
 		def consignment_params
-			params.require(:consignment).permit(:first_name, :last_name, :email, :phone, :need_pickup, :date_available, :address_1_pickup, :address_2_pickup, :city_pickup, :state_pickup, :zip_pickup, :address_1_mailing, :address_2_mailing, :city_mailing, :state_mailing, :zip_mailing, :home_phone, :consigner_number, :consignment_price, :contact, :contract_additional_item, :status, :admin_created, :dashboard_modified, :other_email, :other_contact, :other_phone, items_attributes: [:id, :image, :description, :item_type, :_destroy, :value, :cost, :price, :item_number, :item_status, :price_range])
+			params.require(:consignment).permit(:first_name, :last_name, :email, :phone, :need_pickup, :date_available, :address_1_pickup, :address_2_pickup, :city_pickup, :state_pickup, :zip_pickup, :address_1_mailing, :address_2_mailing, :city_mailing, :state_mailing, :zip_mailing, :home_phone, :consigner_number, :consignment_price, :contact, :contract_additional_item, :status, :admin_created, :dashboard_modified, :other_email, :other_contact, :other_phone, :trello_status, items_attributes: [:id, :image, :description, :item_type, :_destroy, :value, :cost, :price, :item_number, :item_status, :price_range])
 		end
 
 		def set_item_types
