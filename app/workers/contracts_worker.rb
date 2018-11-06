@@ -18,12 +18,12 @@ class ContractsWorker
 private
 
   def generate_pdf(consignment, contract, html)
-    kit = PDFKit.new(html, page_size: 'letter')
-    pdf = kit.to_pdf
+   # kit = PDFKit.new(html, page_size: 'letter')
+   # pdf = kit.to_pdf
 
     save_path = Rails.root.join('public','current_contract.pdf')
     File.open(save_path, 'w:ASCII-8BIT') do |file|
-        file << pdf
+     #   file << pdf
     end
     name = "contracts/#{SecureRandom.uuid}/#{getFileName(consignment)}"
     obj = S3_BUCKET.object(name)
